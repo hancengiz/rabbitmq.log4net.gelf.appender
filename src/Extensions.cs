@@ -1,13 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 namespace rabbitmq.log4net.gelf.appender
 {
     public static class Extensions
     {
-        public static string ShortenMessage(this string message)
+        public static string TruncateString(this string value, int len)
         {
-            const int shortMessageLength = 250;
-            return message.Length < shortMessageLength ? message : message.Substring(0, shortMessageLength);
+            return value.Length < len ? value : value.Substring(0, len);
         }
 
         public static double ToUnixTimestamp(this DateTime d)
@@ -20,6 +20,14 @@ namespace rabbitmq.log4net.gelf.appender
         {
             var datetime = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(dateTime).ToLocalTime();
             return datetime;
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
+        {
+            foreach (T item in enumeration)
+            {
+                action(item);
+            }
         }
     }
 }

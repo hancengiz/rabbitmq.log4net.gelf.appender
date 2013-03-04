@@ -13,7 +13,7 @@ namespace rabbitmq.log4net.gelf.appender.MessageFormatters
         {
             string message = messageObject.ToString();
             gelfMessage.FullMessage = message;
-            gelfMessage.ShortMessage = message.ShortenMessage();
+            gelfMessage.ShortMessage = message.TruncateString(250);
         }
     }
 }

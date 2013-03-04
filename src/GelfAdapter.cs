@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using log4net.Core;
@@ -29,11 +30,11 @@ namespace rabbitmq.log4net.gelf.appender
         public GelfMessage Adapt(LoggingEvent loggingEvent)
         {
             var gelfMessage = GelfMessage.EmptyGelfMessage();
-            gelfMessage["_LoggerName"] = loggingEvent.LoggerName;
             gelfMessage.Level = gelfLogLevelMapper.Map(loggingEvent.Level);
             gelfMessage.Timestamp = loggingEvent.TimeStamp;
             AddLocationInfo(loggingEvent, gelfMessage);
             FormatGelfMessage(gelfMessage, loggingEvent);
+            gelfMessage["_LoggerName"] = loggingEvent.LoggerName;
             return gelfMessage;
         }
 

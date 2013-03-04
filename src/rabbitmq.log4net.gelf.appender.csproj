@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DateTimeExtensions.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="MessageFormatters\DictionaryGelfMessageFormatter.cs" />
     <Compile Include="GelfAdapter.cs" />
     <Compile Include="GelfLogLevelMapper.cs" />
