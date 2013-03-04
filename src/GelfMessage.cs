@@ -65,7 +65,7 @@ namespace rabbitmq.log4net.gelf.appender
 
                 object val = this["timestamp"];
                 double value;
-                bool parsed = double.TryParse(val as string, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
+                bool parsed = Double.TryParse(val as string, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
                 return parsed ? value.FromUnixTimestamp() : DateTime.MinValue;
             }
             set
@@ -91,6 +91,18 @@ namespace rabbitmq.log4net.gelf.appender
                 Add(key, value);
             else
                 this[key] = value;
+        }
+
+        public static GelfMessage EmptyGelfMessage()
+        {
+            return new GelfMessage
+                       {
+                           Facility = "GELF",
+                           Version = "1.0",
+                           Host = Environment.MachineName,
+                           File = "",
+                           Line = ""
+                       };
         }
     }
 }

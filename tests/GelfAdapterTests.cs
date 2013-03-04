@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using log4net.Appender;
 using log4net.Core;
 using rabbitmq.log4net.gelf.appender;
 
@@ -68,6 +67,82 @@ namespace tests
             var gelfMessage = adapter.Adapt(loggingEvent);
 
             Assert.That(gelfMessage.FullMessage, Is.EqualTo(string.Format("{0}\n{1}", message, exception)));
+        }
+
+        [Test]
+        public void ShouldCreateAGelfMessageWithAnObjetInLoggingEvent()
+        {
+            var messageObject = new { A = "B", C = "D" };
+            var loggingEvent = CreateLogginEvent(messageObject, Level.Debug);
+
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
+            var gelfMessage = adapter.Adapt(loggingEvent);
+
+            Assert.That(gelfMessage["_A"], Is.EqualTo("B"));
+            Assert.That(gelfMessage["_C"], Is.EqualTo("D"));
+        }
+
+        [Test]
+        public void ShouldSetFullMessageFromMessagePropertyOnAnMessageObject()
+        {
+            var messageObject = new { Message = "message", Foo = "Bar" };
+            var loggingEvent = CreateLogginEvent(messageObject, Level.Debug);
+
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
+            var gelfMessage = adapter.Adapt(loggingEvent);
+
+            Assert.That(gelfMessage.FullMessage, Is.EqualTo("message"));
+        }
+
+        [Test]
+        public void ShouldSetFullMessageFromFullMessagePropertyOnAnMessageObject()
+        {
+            var messageObject = new { FullMessage = "fullmessage", Foo = "Bar" };
+            var loggingEvent = CreateLogginEvent(messageObject, Level.Debug);
+
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
+            var gelfMessage = adapter.Adapt(loggingEvent);
+
+            Assert.That(gelfMessage.FullMessage, Is.EqualTo("fullmessage"));
+            Assert.That(gelfMessage.ShortMessage, Is.Null);
+        }
+
+        [Test]
+        public void ShouldSetFullMessageFromFull_MessagePropertyOnAnMessageObject()
+        {
+            var messageObject = new { Full_Message = "full_message", Foo = "Bar" };
+            var loggingEvent = CreateLogginEvent(messageObject, Level.Debug);
+
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
+            var gelfMessage = adapter.Adapt(loggingEvent);
+
+            Assert.That(gelfMessage.FullMessage, Is.EqualTo("full_message"));
+            Assert.That(gelfMessage.ShortMessage, Is.Null);
+        }
+        [Test]
+        public void ShouldSetShortMessageFromShortMessagePropertyOnAnMessageObject()
+        {
+            var messageObject = new { ShortMessage = "shortmessage", Foo = "Bar" };
+            var loggingEvent = CreateLogginEvent(messageObject, Level.Debug);
+
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
+            var gelfMessage = adapter.Adapt(loggingEvent);
+
+            Assert.That(gelfMessage.ShortMessage, Is.EqualTo("shortmessage"));
+            Assert.That(gelfMessage.FullMessage, Is.Null);
+        }
+
+        [Test]
+        public void ShouldSetShortMessageFromShort_MessagePropertyOnAnMessageObject()
+        {
+            var messageObject = new { short_message = "short_message", Foo = "Bar" };
+            var loggingEvent = CreateLogginEvent(messageObject, Level.Debug);
+
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
+            var gelfMessage = adapter.Adapt(loggingEvent);
+
+            Assert.That(gelfMessage.ShortMessage, Is.EqualTo("short_message"));
+            Assert.That(gelfMessage.FullMessage, Is.Null);
         }
 
         private static Exception CreateExceptionObjectWithStackTrace()
