@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rabbitmq.log4net.gelf.appender", "src\rabbitmq.log4net.gelf.appender.csproj", "{41D25EB6-2F12-43FA-8FC3-61C2696C8A46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{7D021F95-A2A4-4BAE-A5E7-BF3815E7C468}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{41D25EB6-2F12-43FA-8FC3-61C2696C8A46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41D25EB6-2F12-43FA-8FC3-61C2696C8A46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41D25EB6-2F12-43FA-8FC3-61C2696C8A46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41D25EB6-2F12-43FA-8FC3-61C2696C8A46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D021F95-A2A4-4BAE-A5E7-BF3815E7C468}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D021F95-A2A4-4BAE-A5E7-BF3815E7C468}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D021F95-A2A4-4BAE-A5E7-BF3815E7C468}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D021F95-A2A4-4BAE-A5E7-BF3815E7C468}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
