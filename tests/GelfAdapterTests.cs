@@ -28,6 +28,7 @@ namespace tests
             Assert.That(gelfMessage.Version, Is.EqualTo("1.0"));
             Assert.That(gelfMessage.File, Is.StringEnding(@"rabbitmq.log4net.gelf.appender\tests\GelfAdapterTests.cs"));
             Assert.That(string.IsNullOrEmpty(gelfMessage.Line), Is.False);
+            Assert.That(gelfMessage["_LoggerName"], Is.EqualTo(typeof(GelfAdapter).FullName));
         }
 
 
