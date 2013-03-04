@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using log4net.Core;
@@ -32,10 +31,16 @@ namespace rabbitmq.log4net.gelf.appender
             var gelfMessage = GelfMessage.EmptyGelfMessage();
             gelfMessage.Level = gelfLogLevelMapper.Map(loggingEvent.Level);
             gelfMessage.Timestamp = loggingEvent.TimeStamp;
-            gelfMessage.File = loggingEvent.LocationInformation.FileName;
-            gelfMessage.Line = loggingEvent.LocationInformation.LineNumber;
+            AddLocationInfo(loggingEvent, gelfMessage);
             FormatGelfMessage(gelfMessage, loggingEvent);
             return gelfMessage;
+        }
+
+        private void AddLocationInfo(LoggingEvent loggingEvent, GelfMessage gelfMessage)
+        {
+            if (loggingEvent.LocationInformation == null) return;
+            gelfMessage.File = loggingEvent.LocationInformation.FileName;
+            gelfMessage.Line = loggingEvent.LocationInformation.LineNumber;
         }
 
         private void FormatGelfMessage(GelfMessage gelfMessage, LoggingEvent loggingEvent)
