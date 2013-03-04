@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using log4net;
 using log4net.Core;
 using rabbitmq.log4net.gelf.appender;
 
@@ -149,7 +148,7 @@ namespace tests
 
         private static Exception CreateExceptionObjectWithStackTrace()
         {
-            Exception exception = null;
+            Exception exception;
             try
             {
                 throw new Exception("some exception message");

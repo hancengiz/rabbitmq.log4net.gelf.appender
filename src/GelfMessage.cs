@@ -12,7 +12,6 @@ namespace rabbitmq.log4net.gelf.appender
             set { SetValueAs(value, "facility"); }
         }
 
-
         public string File
         {
             get { return ValueAs<string>("file"); }
