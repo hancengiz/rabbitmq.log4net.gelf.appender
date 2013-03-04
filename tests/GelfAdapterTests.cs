@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using log4net;
 using log4net.Core;
 using rabbitmq.log4net.gelf.appender;
 
@@ -26,9 +27,10 @@ namespace tests
             Assert.That(gelfMessage.Timestamp.ToString(), Is.EqualTo(loggingEvent.TimeStamp.ToString()));
             Assert.That(gelfMessage.Facility, Is.EqualTo("GELF"));
             Assert.That(gelfMessage.Version, Is.EqualTo("1.0"));
-            Assert.That(gelfMessage.File, Is.Empty);
-            Assert.That(gelfMessage.Line, Is.Empty);
+            Assert.That(gelfMessage.File, Is.StringEnding(@"rabbitmq.log4net.gelf.appender\tests\GelfAdapterTests.cs"));
+            Assert.That(string.IsNullOrEmpty(gelfMessage.Line), Is.False);
         }
+
 
         [Test]
         public void ShouldBeAbleToSuccessfullyLogMessagesShorterThan255Characters()
@@ -70,7 +72,7 @@ namespace tests
         }
 
         [Test]
-        public void ShouldCreateAGelfMessageWithAnObjetInLoggingEvent()
+        public void ShouldCreateAGelfMessageWithAnObjectInLoggingEvent()
         {
             var messageObject = new { A = "B", C = "D" };
             var loggingEvent = CreateLogginEvent(messageObject, Level.Debug);
@@ -161,7 +163,7 @@ namespace tests
 
         private LoggingEvent CreateLogginEvent(object message, Level level, Exception exception = null)
         {
-            return new LoggingEvent(null, null, GetType().FullName, level, message, exception);
+            return new LoggingEvent(typeof(GelfAdapter), null, typeof(GelfAdapter).FullName, level, message, exception);
         }
 
         private class StubGelfLogLevelMapper : GelfLogLevelMapper

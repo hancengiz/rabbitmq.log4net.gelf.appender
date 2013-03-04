@@ -32,6 +32,8 @@ namespace rabbitmq.log4net.gelf.appender
             var gelfMessage = GelfMessage.EmptyGelfMessage();
             gelfMessage.Level = gelfLogLevelMapper.Map(loggingEvent.Level);
             gelfMessage.Timestamp = loggingEvent.TimeStamp;
+            gelfMessage.File = loggingEvent.LocationInformation.FileName;
+            gelfMessage.Line = loggingEvent.LocationInformation.LineNumber;
             FormatGelfMessage(gelfMessage, loggingEvent);
             return gelfMessage;
         }
