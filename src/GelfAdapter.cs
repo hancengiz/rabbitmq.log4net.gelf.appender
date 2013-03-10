@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using log4net.Core;
@@ -32,9 +31,10 @@ namespace rabbitmq.log4net.gelf.appender
             var gelfMessage = GelfMessage.EmptyGelfMessage();
             gelfMessage.Level = gelfLogLevelMapper.Map(loggingEvent.Level);
             gelfMessage.Timestamp = loggingEvent.TimeStamp;
+            gelfMessage["_LoggerName"] = loggingEvent.LoggerName;
+
             AddLocationInfo(loggingEvent, gelfMessage);
             FormatGelfMessage(gelfMessage, loggingEvent);
-            gelfMessage["_LoggerName"] = loggingEvent.LoggerName;
             return gelfMessage;
         }
 
@@ -47,17 +47,15 @@ namespace rabbitmq.log4net.gelf.appender
 
         private void FormatGelfMessage(GelfMessage gelfMessage, LoggingEvent loggingEvent)
         {
-            messageObjectFormatters.First(x => x.CanApply(loggingEvent.MessageObject))
-                .Format(gelfMessage, loggingEvent.MessageObject);
-
+            var messageFormatter = messageObjectFormatters.First(x => x.CanApply(loggingEvent.MessageObject));
+            messageFormatter.Format(gelfMessage, loggingEvent.MessageObject);
             AppendExceptionStringIfExists(gelfMessage, loggingEvent);
         }
 
         private void AppendExceptionStringIfExists(GelfMessage gelfMessage, LoggingEvent loggingEvent)
         {
             if (loggingEvent.ExceptionObject != null)
-                gelfMessage.FullMessage = string.Format("{0}\n{1}", gelfMessage.FullMessage,
-                                                        loggingEvent.GetExceptionString());
+                gelfMessage.FullMessage = string.Format("{0}\n{1}", gelfMessage.FullMessage, loggingEvent.GetExceptionString());
         }
     }
 }

@@ -1,10 +1,26 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace rabbitmq.log4net.gelf.appender
 {
     public static class Extensions
     {
+        public static string AsJson(this object obj)
+        {
+            return JsonConvert.SerializeObject(obj);
+        }
+        
+        public static byte[] AsByteArray(this string value)
+        {
+            return System.Text.Encoding.UTF8.GetBytes(value);
+        }
+
+        public static string AsString(this byte[] byteArray)
+        {
+            return System.Text.Encoding.UTF8.GetString(byteArray);
+        }
+
         public static string TruncateString(this string value, int len)
         {
             return value.Length < len ? value : value.Substring(0, len);
