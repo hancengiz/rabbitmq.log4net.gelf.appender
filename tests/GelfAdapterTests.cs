@@ -12,17 +12,16 @@ namespace tests
         [Test]
         public void ShouldGelfMessageWithMessageAndRestOfThePropertiesWithDefaultValuesFromLoggingEvent()
         {
-            const long expectedGelfLogLevel = 1;
             var message = "logging event data message which is longer than two hundred and fifty five characters".Repeat(3);
             var loggingEvent = CreateLogginEvent(message, Level.Debug);
 
-            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(expectedGelfLogLevel));
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
             var gelfMessage = adapter.Adapt(loggingEvent);
 
             Assert.That(gelfMessage.FullMessage, Is.EqualTo(message));
             Assert.That(gelfMessage.ShortMessage, Is.EqualTo(message.Substring(0, 250)));
             Assert.That(gelfMessage.Host, Is.EqualTo(Environment.MachineName));
-            Assert.That(gelfMessage.Level, Is.EqualTo(expectedGelfLogLevel));
+            Assert.That(gelfMessage.Level, Is.EqualTo((long) 1));
             Assert.That(gelfMessage.Timestamp.ToString(), Is.EqualTo(loggingEvent.TimeStamp.ToString()));
             Assert.That(gelfMessage.Facility, Is.EqualTo("GELF"));
             Assert.That(gelfMessage.Version, Is.EqualTo("1.0"));
