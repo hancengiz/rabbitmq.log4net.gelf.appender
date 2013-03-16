@@ -32,6 +32,7 @@ namespace rabbitmq.log4net.gelf.appender
             gelfMessage.Level = gelfLogLevelMapper.Map(loggingEvent.Level);
             gelfMessage.Timestamp = loggingEvent.TimeStamp;
             gelfMessage["_LoggerName"] = loggingEvent.LoggerName;
+            gelfMessage["_LoggerLevel"] = loggingEvent.Level.ToString();
 
             AddLocationInfo(loggingEvent, gelfMessage);
             FormatGelfMessage(gelfMessage, loggingEvent);

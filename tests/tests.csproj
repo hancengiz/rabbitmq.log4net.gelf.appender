@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="GelfAdapterTests.cs" />
     <Compile Include="GelfLogLevelMapperTests.cs" />
-    <Compile Include="GelfRabbitMQAdapterIntegrationTests.cs" />
+    <Compile Include="GelfRabbitMqAdapterIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestingSubscriber.cs" />
     <Compile Include="TestingExtensions.cs" />

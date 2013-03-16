@@ -5,7 +5,7 @@ using log4net.Core;
 
 namespace rabbitmq.log4net.gelf.appender
 {
-    public class GelfRabbitMQAdapter : AppenderSkeleton
+    public class GelfRabbitMqAdapter : AppenderSkeleton
     {
         public string HostName { get; set; }
         public int Port { get; set; }
@@ -18,9 +18,9 @@ namespace rabbitmq.log4net.gelf.appender
         private IConnection connection;
         private IModel model;
 
-        public GelfRabbitMQAdapter() : this(new GelfAdapter()) { }
+        public GelfRabbitMqAdapter() : this(new GelfAdapter()) { }
 
-        public GelfRabbitMQAdapter(GelfAdapter gelfAdapter)
+        public GelfRabbitMqAdapter(GelfAdapter gelfAdapter)
         {
             this.gelfAdapter = gelfAdapter;
             SetDefaultConfig();

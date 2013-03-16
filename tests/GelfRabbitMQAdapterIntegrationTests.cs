@@ -9,17 +9,17 @@ using rabbitmq.log4net.gelf.appender;
 namespace tests
 {
     [TestFixture]
-    public class GelfRabbitMQAdapterIntegrationTests
+    public class GelfRabbitMqAdapterIntegrationTests
     {
-        private GelfRabbitMQAdapter appender;
+        private GelfRabbitMqAdapter appender;
         private TestingSubscriber testingSubscriber;
 
         [SetUp]
         public void SetUp()
         {
-            appender = new GelfRabbitMQAdapter
+            appender = new GelfRabbitMqAdapter
                            {
-                               Threshold = Level.All,
+                               Threshold = Level.Error,
                                HostName = "localhost",
                                VirtualHost = "/",
                                Name = "GelfRabbitMQAdapter",
@@ -52,13 +52,25 @@ namespace tests
             const string message = "should be published to rabbit";
 
             var logger = LogManager.GetLogger(GetType());
-            logger.Info(message);
+            logger.Error(message);
             Thread.Sleep(200);
 
             Assert.That(testingSubscriber.ReceivedMessages.Count, Is.EqualTo(1));
             var receivedMessage = testingSubscriber.ReceivedMessages[0];
             var gelfMessage = JsonConvert.DeserializeObject<GelfMessage>(receivedMessage);
             Assert.That(gelfMessage.FullMessage, Is.EqualTo(message));
+        } 
+        
+        [Test]
+        public void ShouldNotPublishInfoLevelsWhenAppenderLogLevelIsError()
+        {
+            const string message = "should not be published to rabbit";
+
+            var logger = LogManager.GetLogger(GetType());
+            logger.Info(message);
+            Thread.Sleep(200);
+
+            Assert.That(testingSubscriber.ReceivedMessages.Count, Is.EqualTo(0));
         }
     }
 }
