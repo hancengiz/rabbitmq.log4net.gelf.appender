@@ -6,7 +6,7 @@ using RabbitMQ.Client.Events;
 
 namespace tests
 {
-    public class TestingSubscriber : IDisposable
+    public class TestingRabbitListener : IDisposable
     {
         private IConnection connection;
         private IModel model;
@@ -14,7 +14,7 @@ namespace tests
         private const string exchangeName = "tests.log4net.gelf.appender";
         public List<string> ReceivedMessages { get; private set; }
 
-        public TestingSubscriber()
+        public TestingRabbitListener()
         {
             ReceivedMessages = new List<string>();
             SubscribeToExchange();

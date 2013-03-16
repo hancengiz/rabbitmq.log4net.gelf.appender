@@ -12,7 +12,8 @@ namespace tests
     public class GelfRabbitMqAdapterIntegrationTests
     {
         private GelfRabbitMqAdapter appender;
-        private TestingSubscriber testingSubscriber;
+        private TestingRabbitListener testingRabbitListener;
+        private ILog logger;
 
         [SetUp]
         public void SetUp()
@@ -33,17 +34,16 @@ namespace tests
             var root = ((Hierarchy)LogManager.GetRepository()).Root;
             root.AddAppender(appender);
             root.Repository.Configured = true;
-            testingSubscriber = new TestingSubscriber();
+            logger = LogManager.GetLogger(GetType());
+
+            testingRabbitListener = new TestingRabbitListener();
         }
 
         [TearDown]
         public void TearDown()
         {
-            var root = ((Hierarchy)LogManager.GetRepository()).Root;
-            root.RemoveAppender(appender);
-            root.Repository.Configured = true;
-            testingSubscriber.Dispose();
-            appender.Close();
+            testingRabbitListener.Dispose();
+            LogManager.Shutdown();
         }
 
         [Test]
@@ -51,12 +51,11 @@ namespace tests
         {
             const string message = "should be published to rabbit";
 
-            var logger = LogManager.GetLogger(GetType());
             logger.Error(message);
             Thread.Sleep(200);
 
-            Assert.That(testingSubscriber.ReceivedMessages.Count, Is.EqualTo(1));
-            var receivedMessage = testingSubscriber.ReceivedMessages[0];
+            Assert.That(testingRabbitListener.ReceivedMessages.Count, Is.EqualTo(1));
+            var receivedMessage = testingRabbitListener.ReceivedMessages[0];
             var gelfMessage = JsonConvert.DeserializeObject<GelfMessage>(receivedMessage);
             Assert.That(gelfMessage.FullMessage, Is.EqualTo(message));
         } 
@@ -66,11 +65,10 @@ namespace tests
         {
             const string message = "should not be published to rabbit";
 
-            var logger = LogManager.GetLogger(GetType());
             logger.Info(message);
             Thread.Sleep(200);
 
-            Assert.That(testingSubscriber.ReceivedMessages.Count, Is.EqualTo(0));
+            Assert.That(testingRabbitListener.ReceivedMessages.Count, Is.EqualTo(0));
         }
     }
 }

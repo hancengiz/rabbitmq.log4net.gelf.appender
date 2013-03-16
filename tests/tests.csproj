@@ -54,7 +54,7 @@
     <Compile Include="GelfLogLevelMapperTests.cs" />
     <Compile Include="GelfRabbitMqAdapterIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestingSubscriber.cs" />
+    <Compile Include="TestingRabbitListener.cs" />
     <Compile Include="TestingExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

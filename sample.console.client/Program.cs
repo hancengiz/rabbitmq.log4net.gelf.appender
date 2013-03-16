@@ -16,6 +16,7 @@ namespace sample.console.client
                 Console.WriteLine("Will keep logging a message per second.");
                 Console.ReadLine();
             }
+            LogManager.Shutdown();
         }
     }
 
@@ -32,7 +33,7 @@ namespace sample.console.client
 
         private void LogSomeStuff()
         {
-            while (!cancellationTokenSource.Token.IsCancellationRequested)
+            while (!cancellationTokenSource.IsCancellationRequested)
             {
                 Log.Info("info message");
                 Log.Error(new Exception("some random exception"));
