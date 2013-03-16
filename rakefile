@@ -1,0 +1,49 @@
+require 'albacore'
+
+task :default => [:install_packages, :build, :test]
+
+desc "Build"
+msbuild :build do |msb|
+  puts "\n[BUILD] Building solution.\n"
+  msb.properties :configuration => :Release
+  msb.targets :Clean, :Build
+  msb.solution = "rabbitmq.log4net.gelf.appender.sln"
+msb.other_switches :noconsolelogger => true
+end
+
+desc "Test"
+nunit :test => :build do |nunit|
+  puts "\n[TEST] Running unit tests.\n"
+  nunit.command = "packages/NUnit.Runners.2.6.2/tools/nunit-console.exe"
+  nunit.options = "/framework v4.0.30319", "/nologo", "/noshadow", "/out:testoutput.txt"
+  nunit.assemblies "tests/bin/Release/tests.dll"
+end
+
+desc "Install all NuGet packages."
+exec :install_packages => :create_packages_folder do |cmd|
+    puts "\n[NUGET] Installing nuget package dependencies.\n"
+    cmd.command = "tools/NuGet.exe"
+    cmd.parameters = "i .nuget/packages.config -o packages"
+end
+
+task :create_packages_folder do
+    puts "\n[NUGET] Ensuring nuget packages folder exists.\n"
+    Dir.mkdir("packages") unless Dir.exists?("packages")
+end
+
+at_exit do
+filename="tools/success.txt"
+  if $!.nil? || $!.is_a?(SystemExit) && $!.success?
+    puts "\n[SUCCESS] Build has successfully completed. :)\n\n"
+  else
+    code = $!.is_a?(SystemExit) ? $!.status : 1
+filename="tools/failure.txt"
+    puts "\n[FAILURE] Build has failed. :( \n\nExit Code: #{code}\n"
+  end
+
+File.open(filename, "r") do |file|
+  while line = file.gets
+    puts line
+  end
+end
+end
