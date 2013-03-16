@@ -21,7 +21,7 @@ namespace tests
             Assert.That(gelfMessage.FullMessage, Is.EqualTo(message));
             Assert.That(gelfMessage.ShortMessage, Is.EqualTo(message.Substring(0, 250)));
             Assert.That(gelfMessage.Host, Is.EqualTo(Environment.MachineName));
-            Assert.That(gelfMessage.Level, Is.EqualTo((long) 1));
+            Assert.That(gelfMessage.Level, Is.EqualTo((long)1));
             Assert.That(gelfMessage.Timestamp.ToString(), Is.EqualTo(loggingEvent.TimeStamp.ToString()));
             Assert.That(gelfMessage.Facility, Is.EqualTo("GELF"));
             Assert.That(gelfMessage.Version, Is.EqualTo("1.0"));
@@ -55,6 +55,19 @@ namespace tests
 
             Assert.That(gelfMessage["_key1"], Is.EqualTo("1"));
             Assert.That(gelfMessage["_key2"], Is.EqualTo("2"));
+        }
+
+
+        [Test]
+        public void ShouldCreateAGelfMessageWithADictionaryAsMessageObjectWithNullProperties()
+        {
+            var messageObject = new Dictionary<string, object> { { "key1", null } };
+            var loggingEvent = CreateLogginEvent(messageObject, Level.Debug);
+
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
+            var gelfMessage = adapter.Adapt(loggingEvent);
+
+            Assert.That(gelfMessage["_key1"], Is.Empty);
         }
 
         [Test]

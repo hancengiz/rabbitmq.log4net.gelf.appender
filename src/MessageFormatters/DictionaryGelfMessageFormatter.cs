@@ -22,7 +22,7 @@ namespace rabbitmq.log4net.gelf.appender.MessageFormatters
             foreach (DictionaryEntry entry in (IDictionary)messageObject)
             {
                 var key = FormatKey(entry.Key.ToString());
-                gelfMessage[key] = entry.Value.ToString();
+                gelfMessage[key] = entry.Value == null ? string.Empty : entry.Value.ToString();
             }
         }
 
