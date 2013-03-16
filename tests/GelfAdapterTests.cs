@@ -67,7 +67,7 @@ namespace tests
             var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
             var gelfMessage = adapter.Adapt(loggingEvent);
 
-            Assert.That(gelfMessage["_key1"], Is.Empty);
+            Assert.That(gelfMessage.ContainsKey("_key1"), Is.False);
         }
 
         [Test]
