@@ -1,1 +1,0 @@
-{"facility":"GELF","version":"1.0","host":"CENGIZ","file":"c:\\ch\\code\\rabbitmq.log4net.gelf.appender\\tests\\GelfRabbitMqAdapterIntegrationTests.cs","line":"54","level":3,"timestamp":"1363448299653.44","_LoggerName":"tests.GelfRabbitMqAdapterIntegrationTests","_LoggerLevel":"ERROR","full_message":"should be published to rabbit","short_message":"should be published to rabbit"}
