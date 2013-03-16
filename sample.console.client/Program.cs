@@ -33,11 +33,12 @@ namespace sample.console.client
 
         private void LogSomeStuff()
         {
+            int count = 0;
             while (!cancellationTokenSource.IsCancellationRequested)
             {
-                Log.Info("info message");
-                Log.Error(new Exception("some random exception"));
-                Thread.Sleep(10000);
+                Log.Info(string.Format("info message : {0}", ++count));
+                Log.Error(new Exception(string.Format("some random exception {0}", ++count)));
+                Thread.Sleep(new Random().Next(1, 10) * 1000);
             }
         }
 
