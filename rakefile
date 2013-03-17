@@ -1,10 +1,10 @@
 require 'albacore'
 
-task :default => [:install_packages, :build, :test]
+task :default => [:install_packages, :compile, :test, :create_nuget_package]
 
-desc "Build"
-msbuild :build do |msb|
-  puts "\n[BUILD] Building solution.\n"
+desc "compile"
+msbuild :compile do |msb|
+  puts "\n[COMPILE] Compiling solution.\n"
   msb.properties :configuration => :Release
   msb.targets :Clean, :Build
   msb.solution = "rabbitmq.log4net.gelf.appender.sln"
@@ -12,7 +12,7 @@ msb.other_switches :noconsolelogger => true
 end
 
 desc "Test"
-nunit :test => :build do |nunit|
+nunit :test => :compile do |nunit|
   puts "\n[TEST] Running unit tests.\n"
   nunit.command = "packages/NUnit.Runners.2.6.2/tools/nunit-console.exe"
   nunit.options = "/framework v4.0.30319", "/nologo", "/noshadow", "/out:testoutput.txt"
@@ -22,13 +22,66 @@ end
 desc "Install all NuGet packages."
 exec :install_packages => :create_packages_folder do |cmd|
     puts "\n[NUGET] Installing nuget package dependencies.\n"
-    cmd.command = "tools/NuGet.exe"
+    cmd.command = "tools/nuget.exe"
     cmd.parameters = "i .nuget/packages.config -o packages"
 end
 
 task :create_packages_folder do
     puts "\n[NUGET] Ensuring nuget packages folder exists.\n"
     Dir.mkdir("packages") unless Dir.exists?("packages")
+end
+
+desc "pust to offical nuget repo"
+nugetpush :nuget_push => :create_nuget_package do |nuget|
+    nuget.command = "tools/nuget.exe"
+    nuget.package = "src\\bin\\Release\\rabbitmq.log4net.gelf.appender.#{read_version}.nupkg"
+    nuget.apikey = read_nuget_api_key
+end
+
+desc "create the nuget package"
+nuspec :create_nuspec do |nuspec|
+   nuspec.id="rabbitmq.log4net.gelf.appender"
+   nuspec.version = read_version
+   nuspec.authors = "Cengiz Han"
+   nuspec.description = "Custom log4net appender to publish log4net message to RabbitMQ in GELF format."
+   nuspec.title = "rabbitmq.log4net.gelf.appender"
+   nuspec.language = "en-US"
+   nuspec.licenseUrl = "http://github.com/hancengiz"
+   nuspec.projectUrl = "http://github.com/hancengiz"
+   nuspec.dependency "RabbitMQ.Client", "3.0.2"
+   nuspec.dependency "log4net", "2.0.0"
+   nuspec.dependency "Newtonsoft.Json", "4.5.11"
+   nuspec.working_directory = "src/bin/Release/"
+   nuspec.output_file = "rabbitmq.log4net.gelf.appender.nuspec"
+   nuspec.file "rabbitmq.log4net.gelf.appender.dll","lib/net40/"
+end
+
+desc "create the nuget package"
+nugetpack :create_nuget_package => [:compile, :create_nuspec] do |nuget|
+   nuget.command     = "tools/nuget.exe"
+   nuget.nuspec      = "src/bin/Release/rabbitmq.log4net.gelf.appender.nuspec"
+   nuget.output      = "src/bin/Release/"
+   nuget.symbols     = true
+end
+
+def read_version(filepath="src/Properties/AssemblyInfo.cs")
+  File.open(filepath).each_line{ |line|
+      if line.start_with?("[assembly: AssemblyVersion(\"")
+          return line.gsub("[assembly: AssemblyVersion(\"", "").gsub("\")]","").gsub(/\s+/, "")
+      end
+  }
+end
+
+def read_nuget_api_key(filepath="nuget.apikey")
+  begin
+     file = File.new(filepath, "r")
+     apikey = file.gets
+     file.close
+	 return apikey
+	rescue => err
+     puts "Error when reading nuget.apikey file. Exception: #{err}"
+     err
+  end
 end
 
 at_exit do
