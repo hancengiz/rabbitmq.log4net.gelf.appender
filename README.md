@@ -1,9 +1,11 @@
 rabbitmq.log4net.gelf.appender
 ==============================
 
-sample config
-=============
+### download from nuget repository
+https://nuget.org/packages/rabbitmq.log4net.gelf.appender/
 
+### change your app/web config file
+sample config
 ```  
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
@@ -30,7 +32,6 @@ sample config
 
 </configuration>
 ```  
-
 
 ### Gelf Format 
 https://github.com/Graylog2/graylog2-docs/wiki/GELF
