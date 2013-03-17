@@ -1,6 +1,9 @@
 require 'albacore'
+require 'rake/clean'
 
-task :default => [:install_packages, :compile, :test, :create_nuget_package]
+CLOBBER.include('**/bin')
+
+task :default => [:clobber, :install_packages, :compile, :test, :create_nuget_package]
 
 desc "compile"
 msbuild :compile do |msb|
