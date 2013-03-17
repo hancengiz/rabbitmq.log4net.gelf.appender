@@ -1,11 +1,10 @@
 rabbitmq.log4net.gelf.appender
 ==============================
 
-rabbitmq.log4net.gelf.appender
-
 sample config
 =============
 
+```  
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
   <configSections>
@@ -30,3 +29,8 @@ sample config
   </log4net>
 
 </configuration>
+```  
+
+
+### Gelf Format 
+https://github.com/Graylog2/graylog2-docs/wiki/GELF
