@@ -28,7 +28,7 @@ namespace rabbitmq.log4net.gelf.appender
 
         public static double ToUnixTimestamp(this DateTime d)
         {
-            var duration = d.ToLocalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            var duration = d.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return duration.TotalMilliseconds;
         }
 
