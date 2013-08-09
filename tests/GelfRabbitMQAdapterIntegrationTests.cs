@@ -11,14 +11,14 @@ namespace tests
     [TestFixture]
     public class GelfRabbitMqAdapterIntegrationTests
     {
-        private GelfRabbitMqAdapter appender;
+        private GelfRabbitMqAppender appender;
         private TestingRabbitListener testingRabbitListener;
         private ILog logger;
 
         [SetUp]
         public void SetUp()
         {
-            appender = new GelfRabbitMqAdapter
+            appender = new GelfRabbitMqAppender
                            {
                                Threshold = Level.Error,
                                HostName = "localhost",
