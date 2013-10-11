@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using log4net.Core;
 using rabbitmq.log4net.gelf.appender.MessageFormatters;
@@ -33,6 +34,7 @@ namespace rabbitmq.log4net.gelf.appender
             gelfMessage.Timestamp = loggingEvent.TimeStamp;
             gelfMessage["_LoggerName"] = loggingEvent.LoggerName;
             gelfMessage["_LoggerLevel"] = loggingEvent.Level.ToString();
+            gelfMessage["_ProcessName"] = Process.GetCurrentProcess().ProcessName;
 
             AddLocationInfo(loggingEvent, gelfMessage);
             FormatGelfMessage(gelfMessage, loggingEvent);
