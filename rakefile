@@ -35,10 +35,10 @@ task :create_packages_folder do
 end
 
 desc "pust to offical nuget repo"
-nugetpush :nuget_push => :create_nuget_package do |nuget|
+nugetpush :nuget_push, [:arg1] => :create_nuget_package do |nuget, args|
     nuget.command = "tools/nuget.exe"
     nuget.package = "src\\bin\\Release\\rabbitmq.log4net.gelf.appender.#{read_version}.nupkg"
-    nuget.apikey = read_nuget_api_key
+    nuget.apikey = args.arg1
 end
 
 desc "create the nuget package"
@@ -73,18 +73,6 @@ def read_version(filepath="src/Properties/AssemblyInfo.cs")
           return line.gsub("[assembly: AssemblyVersion(\"", "").gsub("\")]","").gsub(/\s+/, "")
       end
   }
-end
-
-def read_nuget_api_key(filepath="nuget.apikey")
-  begin
-     file = File.new(filepath, "r")
-     apikey = file.gets
-     file.close
-	 return apikey
-	rescue => err
-     puts "Error when reading nuget.apikey file. Exception: #{err}"
-     err
-  end
 end
 
 at_exit do
