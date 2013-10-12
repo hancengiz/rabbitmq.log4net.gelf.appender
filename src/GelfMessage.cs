@@ -96,7 +96,6 @@ namespace rabbitmq.log4net.gelf.appender
         {
             return new GelfMessage
                        {
-                           Facility = "GELF",
                            Version = "1.0",
                            Host = Environment.MachineName,
                            File = "",
