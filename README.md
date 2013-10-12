@@ -21,6 +21,7 @@ sample config
       <Exchange value="log4net.gelf.appender" />
       <Username value="guest" />
       <Password value="guest" />
+      <Facility value="sample-application" />
     </appender>
 
    

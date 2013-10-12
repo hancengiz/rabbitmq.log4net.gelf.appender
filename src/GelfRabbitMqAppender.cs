@@ -13,6 +13,7 @@ namespace rabbitmq.log4net.gelf.appender
         public string Exchange { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public string Facility { get; set; }
 
         private readonly GelfAdapter gelfAdapter;
         private IConnection connection;
@@ -39,6 +40,11 @@ namespace rabbitmq.log4net.gelf.appender
         public override void ActivateOptions()
         {
             base.ActivateOptions();
+            
+            if (!string.IsNullOrWhiteSpace(Facility))
+            {
+                gelfAdapter.Facility = Facility;
+            }
 
             OpenConnection();
         }

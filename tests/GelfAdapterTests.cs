@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using NUnit.Framework;
 using log4net.Core;
 using rabbitmq.log4net.gelf.appender;
@@ -10,8 +11,24 @@ namespace tests
     [TestFixture]
     public class GelfAdapterTests
     {
+
         [Test]
-        public void ShouldGelfMessageWithMessageAndRestOfThePropertiesWithDefaultValuesFromLoggingEvent()
+        public void GelfMessageContainsFieldsRequiredByTheStandard()
+        {
+            const string message = "some log message";
+            var loggingEvents = CreateLogginEvent(message, Level.Info);
+
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(2));
+            var gelfMessage = adapter.Adapt(loggingEvents);
+
+            Assert.That(gelfMessage.Version, Is.EqualTo("1.0"));
+            Assert.That(gelfMessage.Host, Is.EqualTo(Environment.MachineName));
+            Assert.That(gelfMessage.ShortMessage, Is.Not.Empty);
+            Assert.That(gelfMessage.Timestamp, Is.GreaterThan(DateTime.MinValue));
+        }
+
+        [Test]
+        public void GelfMessageIsPopulatedWithExpectedValuesBasedOnTheLoggingEvent()
         {
             var message = "logging event data message which is longer than two hundred and fifty five characters".Repeat(3);
             var loggingEvent = CreateLogginEvent(message, Level.Debug);
@@ -21,11 +38,8 @@ namespace tests
 
             Assert.That(gelfMessage.FullMessage, Is.EqualTo(message));
             Assert.That(gelfMessage.ShortMessage, Is.EqualTo(message.Substring(0, 250)));
-            Assert.That(gelfMessage.Host, Is.EqualTo(Environment.MachineName));
             Assert.That(gelfMessage.Level, Is.EqualTo((long)1));
             Assert.That(gelfMessage.Timestamp.ToString(), Is.EqualTo(loggingEvent.TimeStamp.ToString()));
-            Assert.That(gelfMessage.Facility, Is.EqualTo("GELF"));
-            Assert.That(gelfMessage.Version, Is.EqualTo("1.0"));
             Assert.That(gelfMessage.File, Is.StringEnding(@"rabbitmq.log4net.gelf.appender\tests\GelfAdapterTests.cs"));
             Assert.That(string.IsNullOrEmpty(gelfMessage.Line), Is.False);
             Assert.That(gelfMessage["_LoggerName"], Is.EqualTo(typeof(GelfAdapter).FullName));
@@ -33,6 +47,20 @@ namespace tests
             Assert.That(gelfMessage["_ProcessName"], Is.EqualTo(Process.GetCurrentProcess().ProcessName));
         }
 
+        [Test]
+        public void SetsFacilityInTheGelfMessageWhenItHasBeenConfigured()
+        {
+            const string message = "irrelevant message";
+            var loggingEvent = CreateLogginEvent(message, Level.Debug);
+
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1))
+            {
+                Facility = "test-system"
+            };
+            var gelfMessage = adapter.Adapt(loggingEvent);
+
+            Assert.That(gelfMessage.Facility, Is.EqualTo("test-system"));
+        }
 
         [Test]
         public void ShouldBeAbleToSuccessfullyLogMessagesShorterThan255Characters()

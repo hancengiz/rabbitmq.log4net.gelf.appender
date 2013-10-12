@@ -27,7 +27,8 @@ namespace tests
                                Port = 5672,
                                Exchange = "tests.log4net.gelf.appender",
                                Username = "guest",
-                               Password = "guest"
+                               Password = "guest",
+                               Facility = "test-system"
                            };
             appender.ActivateOptions();
 
@@ -58,6 +59,7 @@ namespace tests
             var receivedMessage = testingRabbitListener.ReceivedMessages[0];
             var gelfMessage = JsonConvert.DeserializeObject<GelfMessage>(receivedMessage);
             Assert.That(gelfMessage.FullMessage, Is.EqualTo(message));
+            Assert.That(gelfMessage.Facility, Is.EqualTo("test-system"));
         } 
         
         [Test]
