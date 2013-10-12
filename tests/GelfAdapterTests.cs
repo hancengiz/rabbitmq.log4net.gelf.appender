@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using NUnit.Framework;
 using log4net.Core;
 using rabbitmq.log4net.gelf.appender;
@@ -46,6 +47,20 @@ namespace tests
             Assert.That(gelfMessage["_ProcessName"], Is.EqualTo(Process.GetCurrentProcess().ProcessName));
         }
 
+        [Test]
+        public void SetsFacilityInTheGelfMessageWhenItHasBeenConfigured()
+        {
+            const string message = "irrelevant message";
+            var loggingEvent = CreateLogginEvent(message, Level.Debug);
+
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1))
+            {
+                Facility = "test-system"
+            };
+            var gelfMessage = adapter.Adapt(loggingEvent);
+
+            Assert.That(gelfMessage.Facility, Is.EqualTo("test-system"));
+        }
 
         [Test]
         public void ShouldBeAbleToSuccessfullyLogMessagesShorterThan255Characters()

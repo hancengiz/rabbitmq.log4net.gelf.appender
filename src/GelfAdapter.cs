@@ -27,11 +27,17 @@ namespace rabbitmq.log4net.gelf.appender
             this.messageObjectFormatters = messageObjectFormatters;
         }
 
+        public string Facility { private get; set; }
+
         public GelfMessage Adapt(LoggingEvent loggingEvent)
         {
             var gelfMessage = GelfMessage.EmptyGelfMessage();
             gelfMessage.Level = gelfLogLevelMapper.Map(loggingEvent.Level);
             gelfMessage.Timestamp = loggingEvent.TimeStamp;
+            if (!string.IsNullOrWhiteSpace(Facility))
+            {
+                gelfMessage.Facility = Facility;
+            }
             gelfMessage["_LoggerName"] = loggingEvent.LoggerName;
             gelfMessage["_LoggerLevel"] = loggingEvent.Level.ToString();
             gelfMessage["_ProcessName"] = Process.GetCurrentProcess().ProcessName;
