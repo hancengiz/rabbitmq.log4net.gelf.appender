@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("rabbitmq.log4net.gelf.appender")]
 [assembly: AssemblyCompany("Cengiz Han")]
