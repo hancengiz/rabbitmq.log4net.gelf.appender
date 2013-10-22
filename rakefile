@@ -11,7 +11,7 @@ msbuild :compile do |msb|
   msb.properties :configuration => :Release
   msb.targets :Clean, :Build
   msb.solution = "rabbitmq.log4net.gelf.appender.sln"
-msb.other_switches :noconsolelogger => true
+  msb.other_switches :noconsolelogger => true
 end
 
 desc "Test"
@@ -43,26 +43,22 @@ end
 
 desc "create the nuget package"
 nuspec :create_nuspec do |nuspec|
-   nuspec.id="rabbitmq.log4net.gelf.appender"
-   nuspec.version = read_version
+   nuspec.id="$id$"
+   nuspec.version = "$version$"
    nuspec.authors = "Cengiz Han"
-   nuspec.description = "Custom log4net appender to publish log4net message to RabbitMQ in GELF format."
-   nuspec.title = "rabbitmq.log4net.gelf.appender"
+   nuspec.description = "$description$"
+   nuspec.title = "log4net appender publishing GELF messages to RabbitMQ"
    nuspec.language = "en-US"
    nuspec.licenseUrl = "https://github.com/hancengiz/rabbitmq.log4net.gelf.appender"
    nuspec.projectUrl = "https://github.com/hancengiz/rabbitmq.log4net.gelf.appender"
-   nuspec.dependency "RabbitMQ.Client", "3.0.2"
-   nuspec.dependency "log4net", "2.0.0"
-   nuspec.dependency "Newtonsoft.Json", "4.5.11"
-   nuspec.working_directory = "src/bin/Release/"
-   nuspec.output_file = "rabbitmq.log4net.gelf.appender.nuspec"
-   nuspec.file "rabbitmq.log4net.gelf.appender.dll","lib/net40/"
+   nuspec.tags = "rabbitMQ log4net gelf logging appender"
+   nuspec.output_file = "src/rabbitmq.log4net.gelf.appender.nuspec"
 end
 
 desc "create the nuget package"
 nugetpack :create_nuget_package => [:compile, :create_nuspec] do |nuget|
    nuget.command     = "tools/nuget.exe"
-   nuget.nuspec      = "src/bin/Release/rabbitmq.log4net.gelf.appender.nuspec"
+   nuget.nuspec      = "src/rabbitmq.log4net.gelf.appender.csproj"
    nuget.output      = "src/bin/Release/"
    nuget.symbols     = true
 end
