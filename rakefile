@@ -45,7 +45,7 @@ desc "create the nuget package"
 nuspec :create_nuspec do |nuspec|
    nuspec.id="$id$"
    nuspec.version = "$version$"
-   nuspec.authors = "Cengiz Han"
+   nuspec.authors = "Cengiz Han, Marcin Floryan"
    nuspec.description = "$description$"
    nuspec.title = "log4net appender publishing GELF messages to RabbitMQ"
    nuspec.language = "en-US"
