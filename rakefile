@@ -51,6 +51,7 @@ nuspec :create_nuspec do |nuspec|
    nuspec.language = "en-US"
    nuspec.licenseUrl = "https://github.com/hancengiz/rabbitmq.log4net.gelf.appender"
    nuspec.projectUrl = "https://github.com/hancengiz/rabbitmq.log4net.gelf.appender"
+   nuspec.iconUrl = "https://raw.github.com/hancengiz/rabbitmq.log4net.gelf.appender/master/logo.png"
    nuspec.tags = "rabbitMQ log4net gelf logging appender"
    nuspec.output_file = "src/rabbitmq.log4net.gelf.appender.nuspec"
 end

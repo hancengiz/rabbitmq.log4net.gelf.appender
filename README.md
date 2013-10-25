@@ -1,5 +1,6 @@
 rabbitmq.log4net.gelf.appender
 ==============================
+![Logo](/logo.png "Logo")
 
 ## USAGE
 
