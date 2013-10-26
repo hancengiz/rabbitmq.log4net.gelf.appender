@@ -49,6 +49,10 @@ In particular it's handy with a log aggregator like [LogStash](http://logstash.n
 
 ## CHANGE LOG
 
+### Version 0.1.6
+
+ * Explicit Client Properties for RabbitMQ connections make it easier to identify connected appenders
+
 ### Version 0.1.5
 
  * You can specify `Facility` for the GELF message in the appender config file
