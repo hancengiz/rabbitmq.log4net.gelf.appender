@@ -4,7 +4,7 @@ rabbitmq.log4net.gelf.appender
 
 ## USAGE
 
-### download from nuget repository
+### download the nuget package from the repository
 https://nuget.org/packages/rabbitmq.log4net.gelf.appender/
 
 ### change your app/web config file
@@ -40,6 +40,12 @@ sample config
 
 ### Gelf Format 
 https://github.com/Graylog2/graylog2-docs/wiki/GELF
+
+## Use case
+
+Sending your log messages onto a message bus (RabbitMQ) means they can be picked up easily and processed by a variety of consumers.
+
+In particular it's handy with a log aggregator like [LogStash](http://logstash.net/). Just configure the [RabbitMQ input](http://logstash.net/docs/1.2.2/inputs/rabbitmq) and use [Kibana](http://www.elasticsearch.org/overview/kibana/) to search the [ElasticSearch](http://www.elasticsearch.org/overview/) database of your logs.
 
 ## CHANGE LOG
 
