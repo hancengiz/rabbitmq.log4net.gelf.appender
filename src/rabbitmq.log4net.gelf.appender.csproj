@@ -54,6 +54,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="GelfRabbitMqAppender.cs" />
     <Compile Include="IKnowAboutConfiguredFacility.cs" />
+    <Compile Include="KnownFacility.cs" />
     <Compile Include="MessageFormatters\DictionaryGelfMessageFormatter.cs" />
     <Compile Include="GelfAdapter.cs" />
     <Compile Include="GelfLogLevelMapper.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="MessageFormatters\IGelfMessageFormatter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MessageFormatters\StringGelfMessageFormatter.cs" />
+    <Compile Include="UnknownFacility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

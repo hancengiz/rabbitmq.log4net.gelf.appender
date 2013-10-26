@@ -47,7 +47,7 @@ namespace tests
                 this.facilityName = facilityName;
             }
 
-            public void UseTo(Action<string> facilitySettingAction)
+            public void UseToCall(Action<string> facilitySettingAction)
             {
                 facilitySettingAction(facilityName);
             }
@@ -55,7 +55,7 @@ namespace tests
 
         public class StubFacilityInformation : IKnowAboutConfiguredFacility
         {
-            public void UseTo(Action<string> facilitySettingAction)
+            public void UseToCall(Action<string> facilitySettingAction)
             {
             }
         }

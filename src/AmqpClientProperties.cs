@@ -14,7 +14,7 @@ namespace rabbitmq.log4net.gelf.appender
             properties.Add(Properties.Product, executingAssemblyName.Name);
             properties.Add(Properties.Version, executingAssemblyName.Version.ToString());
             properties.Add(Properties.Platform, Environment.OSVersion.Platform.ToString());
-            facilityInformation.UseTo(facility => properties.Add(Properties.Facility, facility));
+            facilityInformation.UseToCall(facility => properties.Add(Properties.Facility, facility));
             properties.Add(Properties.Host, Environment.MachineName);
             return properties;
         }

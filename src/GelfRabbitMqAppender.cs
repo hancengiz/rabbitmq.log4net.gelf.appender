@@ -18,6 +18,7 @@ namespace rabbitmq.log4net.gelf.appender
         private readonly GelfAdapter gelfAdapter;
         private IConnection connection;
         private IModel model;
+        private IKnowAboutConfiguredFacility facilityInformation = new UnknownFacility();
 
         public GelfRabbitMqAppender() : this(new GelfAdapter()) { }
 
@@ -43,6 +44,7 @@ namespace rabbitmq.log4net.gelf.appender
             
             if (!string.IsNullOrWhiteSpace(Facility))
             {
+                facilityInformation = new KnownFacility(Facility);
                 gelfAdapter.Facility = Facility;
             }
 
@@ -87,14 +89,15 @@ namespace rabbitmq.log4net.gelf.appender
 
         protected virtual ConnectionFactory CreateConnectionFactory()
         {
-            return new ConnectionFactory()
+            return new ConnectionFactory
                                     {
                                         Protocol = Protocols.FromEnvironment(),
                                         HostName = HostName,
                                         Port = Port,
                                         VirtualHost = VirtualHost,
                                         UserName = Username,
-                                        Password = Password
+                                        Password = Password,
+                                        ClientProperties = AmqpClientProperties.WithFacility(facilityInformation) 
                                     };
         }
 
