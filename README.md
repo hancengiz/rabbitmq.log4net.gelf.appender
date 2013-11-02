@@ -49,6 +49,10 @@ In particular it's handy with a log aggregator like [LogStash](http://logstash.n
 
 ## CHANGE LOG
 
+### Version 0.1.7
+
+ * A property called `message` (case insensitive) in a logged object is mapped to GELF `short_message`
+
 ### Version 0.1.6
 
  * Explicit Client Properties for RabbitMQ connections make it easier to identify connected appenders
