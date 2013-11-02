@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using NUnit.Framework;
 using log4net.Core;
 using rabbitmq.log4net.gelf.appender;
@@ -102,16 +101,33 @@ namespace tests
         }
 
         [Test]
-        public void ShouldCreateAGelfMessageWithAnExceptionInLoggingEvent()
+        public void Adds_Exception_Information_When_Exception_Is_Supplied()
         {
-            const string message = "some message for exception logging";
-            var exception = CreateExceptionObjectWithStackTrace();
-            var loggingEvent = CreateLogginEvent(message, Level.Debug, exception);
+            var exception = CreateExceptionObjectWithStackTrace("Giant Shrimp Monster");
+            var loggingEvent = CreateLogginEvent("shiver me whiskers", Level.Debug, exception);
 
             var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
             var gelfMessage = adapter.Adapt(loggingEvent);
 
-            Assert.That(gelfMessage.FullMessage, Is.EqualTo(string.Format("{0}\n{1}", message, exception)));
+            Assert.That(gelfMessage.ShortMessage, Is.EqualTo("shiver me whiskers"));
+            Assert.That(gelfMessage.FullMessage, Is.EqualTo("shiver me whiskers"));
+            Assert.That(gelfMessage["_ExceptionType"], Is.EqualTo("System.Exception"));
+            Assert.That(gelfMessage["_ExceptionMessage"], Is.EqualTo("Giant Shrimp Monster"));
+            Assert.That(gelfMessage["_Exception"], Is.StringStarting("System.Exception: Giant Shrimp Monster"));
+        }
+
+        [Test]
+        public void Populates_GelfMessage_WithExceptionInformation()
+        {
+            var exception = CreateExceptionObjectWithStackTrace("some exception message");
+            var loggingEvent = CreateLogginEvent(exception, Level.Debug);
+
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
+            var gelfMessage = adapter.Adapt(loggingEvent);
+
+            Assert.That(gelfMessage.ShortMessage, Is.EqualTo("some exception message"));
+            Assert.That(gelfMessage.FullMessage, Contains.Substring("System.Exception: some exception message"));
+            Assert.That(gelfMessage["_ExceptionType"], Is.EqualTo("System.Exception"));
         }
 
         [Test]
@@ -164,6 +180,7 @@ namespace tests
             Assert.That(gelfMessage.FullMessage, Is.EqualTo("full_message"));
             Assert.That(gelfMessage.ShortMessage, Is.Null);
         }
+
         [Test]
         public void ShouldSetShortMessageFromShortMessagePropertyOnAnMessageObject()
         {
@@ -190,12 +207,12 @@ namespace tests
             Assert.That(gelfMessage.FullMessage, Is.Null);
         }
 
-        private static Exception CreateExceptionObjectWithStackTrace()
+        private static Exception CreateExceptionObjectWithStackTrace(string message)
         {
             Exception exception;
             try
             {
-                throw new Exception("some exception message");
+                throw new Exception(message);
             }
             catch (Exception ex)
             {

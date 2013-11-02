@@ -49,6 +49,11 @@ In particular it's handy with a log aggregator like [LogStash](http://logstash.n
 
 ## CHANGE LOG
 
+### Version 0.2
+
+ * If logger logs an `Exception` tge GELF message is populated with additional information: `_ExceptionType`, `_ExceptionStackTrace`, `_InnerExceptionType`, `_InnerExceptionMessage`
+ * The same happens when an exception object is provided when logging a message
+
 ### Version 0.1.7
 
  * A property called `message` (case insensitive) in a logged object is mapped to GELF `short_message`

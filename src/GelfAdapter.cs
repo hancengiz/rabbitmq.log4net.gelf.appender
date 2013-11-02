@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,12 +12,15 @@ namespace rabbitmq.log4net.gelf.appender
         private readonly GelfLogLevelMapper gelfLogLevelMapper;
         private readonly IList<IGelfMessageFormatter> messageObjectFormatters;
 
+        private static readonly ExceptionMessageFormatter ExceptionMessageFormatter = new ExceptionMessageFormatter();
+
         public GelfAdapter() : this(new GelfLogLevelMapper()) { }
 
         public GelfAdapter(GelfLogLevelMapper gelfLogLevelMapper)
             : this(gelfLogLevelMapper, new List<IGelfMessageFormatter>
                                            {
                                                new StringGelfMessageFormatter(),
+                                               ExceptionMessageFormatter,
                                                new DictionaryGelfMessageFormatter(),
                                                new GenericObjectGelfMessageFormatter(),
                                            }) { }
@@ -58,13 +62,15 @@ namespace rabbitmq.log4net.gelf.appender
         {
             var messageFormatter = messageObjectFormatters.First(x => x.CanApply(loggingEvent.MessageObject));
             messageFormatter.Format(gelfMessage, loggingEvent.MessageObject);
-            AppendExceptionStringIfExists(gelfMessage, loggingEvent);
+            AppendExceptionInformationIfExists(gelfMessage, loggingEvent.ExceptionObject);
         }
 
-        private void AppendExceptionStringIfExists(GelfMessage gelfMessage, LoggingEvent loggingEvent)
+        private void AppendExceptionInformationIfExists(GelfMessage gelfMessage, Exception exceptionObject)
         {
-            if (loggingEvent.ExceptionObject != null)
-                gelfMessage.FullMessage = string.Format("{0}\n{1}", gelfMessage.FullMessage, loggingEvent.GetExceptionString());
+            if (exceptionObject != null)
+            {
+                ExceptionMessageFormatter.Format(gelfMessage, exceptionObject);
+            }
         }
     }
 }
