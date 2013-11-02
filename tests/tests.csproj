@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AmqpClientPropertiesTests.cs" />
+    <Compile Include="Formatters\StringGelfMessageFormatterTests.cs" />
     <Compile Include="GelfAdapterTests.cs" />
     <Compile Include="GelfLogLevelMapperTests.cs" />
     <Compile Include="GelfRabbitMqAdapterIntegrationTests.cs" />
