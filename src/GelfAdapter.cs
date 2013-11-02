@@ -31,7 +31,7 @@ namespace rabbitmq.log4net.gelf.appender
 
         public GelfMessage Adapt(LoggingEvent loggingEvent)
         {
-            var gelfMessage = GelfMessage.EmptyGelfMessage();
+            var gelfMessage = GelfMessage.EmptyGelfMessage;
             gelfMessage.Level = gelfLogLevelMapper.Map(loggingEvent.Level);
             gelfMessage.Timestamp = loggingEvent.TimeStamp;
             if (!string.IsNullOrWhiteSpace(Facility))

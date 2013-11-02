@@ -92,15 +92,18 @@ namespace rabbitmq.log4net.gelf.appender
                 this[key] = value;
         }
 
-        public static GelfMessage EmptyGelfMessage()
+        public static GelfMessage EmptyGelfMessage
         {
-            return new GelfMessage
-                       {
-                           Version = "1.0",
-                           Host = Environment.MachineName,
-                           File = "",
-                           Line = ""
-                       };
+            get
+            {
+                return new GelfMessage
+                {
+                    Version = "1.0",
+                    Host = Environment.MachineName,
+                    File = "",
+                    Line = ""
+                };
+            }
         }
     }
 }
