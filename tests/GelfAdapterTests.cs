@@ -39,7 +39,7 @@ namespace tests
             Assert.That(gelfMessage.FullMessage, Is.EqualTo(message));
             Assert.That(gelfMessage.ShortMessage, Is.EqualTo(message.Substring(0, 250)));
             Assert.That(gelfMessage.Level, Is.EqualTo((long)1));
-            Assert.That(gelfMessage.Timestamp.ToString(), Is.EqualTo(loggingEvent.TimeStamp.ToString()));
+            Assert.That(gelfMessage.Timestamp, Is.EqualTo(loggingEvent.TimeStamp).Within(1).Seconds);
             Assert.That(gelfMessage.File, Is.StringEnding(@"rabbitmq.log4net.gelf.appender\tests\GelfAdapterTests.cs"));
             Assert.That(string.IsNullOrEmpty(gelfMessage.Line), Is.False);
             Assert.That(gelfMessage["_LoggerName"], Is.EqualTo(typeof(GelfAdapter).FullName));
