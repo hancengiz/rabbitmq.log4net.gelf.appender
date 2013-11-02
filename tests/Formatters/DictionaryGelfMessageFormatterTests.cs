@@ -43,8 +43,6 @@ namespace tests.Formatters
         [TestCase("fullmessage")]
         [TestCase("FULLMESSAGE")]
         [TestCase("FULL_MESSAGE")]
-        [TestCase("MESSAGE")]
-        [TestCase("message")]
         [Test]
         public void Uses_Known_Key_Names_To_Populate_Full_Message(string knownKeyName)
         {
@@ -64,6 +62,8 @@ namespace tests.Formatters
         [TestCase("shortmessage")]
         [TestCase("SHORTMESSAGE")]
         [TestCase("SHORT_MESSAGE")]
+        [TestCase("MESSAGE")]
+        [TestCase("message")]
         [Test]
         public void Uses_Known_Key_Names_To_Populate_Short_Message(string knownKeyName)
         {

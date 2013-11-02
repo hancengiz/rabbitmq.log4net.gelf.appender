@@ -128,7 +128,7 @@ namespace tests
         }
 
         [Test]
-        public void ShouldSetFullMessageFromMessagePropertyOnAnMessageObject()
+        public void ShouldSetShortMessageFromMessagePropertyOnAnMessageObject()
         {
             var messageObject = new { Message = "message", Foo = "Bar" };
             var loggingEvent = CreateLogginEvent(messageObject, Level.Debug);
@@ -136,7 +136,7 @@ namespace tests
             var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
             var gelfMessage = adapter.Adapt(loggingEvent);
 
-            Assert.That(gelfMessage.FullMessage, Is.EqualTo("message"));
+            Assert.That(gelfMessage.ShortMessage, Is.EqualTo("message"));
         }
 
         [Test]

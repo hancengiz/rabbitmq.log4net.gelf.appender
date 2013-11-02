@@ -9,7 +9,7 @@ namespace rabbitmq.log4net.gelf.appender.MessageFormatters
     {
         private const string FullMessageKeyName = "full_message";
         private const string ShortMessageKeyName = "short_message";
-        private static readonly IEnumerable<string> FullMessageKeyValues = new[] { "FULLMESSAGE", "FULL_MESSAGE", "MESSAGE" };
+        private static readonly IEnumerable<string> FullMessageKeyValues = new[] { "FULLMESSAGE", "FULL_MESSAGE"};
         private static readonly IEnumerable<string> ShortMessageKeyValues = new[] { "SHORTMESSAGE", "SHORT_MESSAGE", "MESSAGE" };
 
         public virtual bool CanApply(object messageObject)
@@ -29,8 +29,8 @@ namespace rabbitmq.log4net.gelf.appender.MessageFormatters
 
         private string FormatKey(string key)
         {
-            if (IsForFullMessage(key)) return FullMessageKeyName;
             if (IsForShortMessage(key)) return ShortMessageKeyName;
+            if (IsForFullMessage(key)) return FullMessageKeyName;
             return key.StartsWith("_") ? key : "_" + key;
         }
 
