@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
+using log4net.Util;
 using NUnit.Framework;
 using log4net.Core;
 using rabbitmq.log4net.gelf.appender;
@@ -44,6 +46,8 @@ namespace tests
             Assert.That(gelfMessage["_LoggerName"], Is.EqualTo(typeof(GelfAdapter).FullName));
             Assert.That(gelfMessage["_LoggerLevel"], Is.EqualTo("DEBUG"));
             Assert.That(gelfMessage["_ProcessName"], Is.EqualTo(Process.GetCurrentProcess().ProcessName));
+            Assert.That(gelfMessage["_Domain"], Is.EqualTo(SystemInfo.ApplicationFriendlyName));
+            Assert.That(gelfMessage["_ThreadName"], Is.EqualTo(Thread.CurrentThread.Name));
         }
 
         [Test]

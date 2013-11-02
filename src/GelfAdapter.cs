@@ -45,6 +45,8 @@ namespace rabbitmq.log4net.gelf.appender
             gelfMessage["_LoggerName"] = loggingEvent.LoggerName;
             gelfMessage["_LoggerLevel"] = loggingEvent.Level.ToString();
             gelfMessage["_ProcessName"] = Process.GetCurrentProcess().ProcessName;
+            gelfMessage["_ThreadName"] = loggingEvent.ThreadName;
+            gelfMessage["_Domain"] = loggingEvent.Domain;
 
             AddLocationInfo(loggingEvent, gelfMessage);
             FormatGelfMessage(gelfMessage, loggingEvent);
