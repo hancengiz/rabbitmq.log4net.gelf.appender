@@ -105,8 +105,8 @@ namespace rabbitmq.log4net.gelf.appender
         {
             EnsureConnectionIsOpen();
             model.ExchangeDeclare(Exchange, ExchangeType.Topic);
-            var messageBody = gelfAdapter.Adapt(loggingEvent).AsJson().AsByteArray();
-            model.BasicPublish(Exchange, "log4net.gelf.appender", true, null, messageBody);
+            var messageBody = gelfAdapter.Adapt(loggingEvent).AsJson();
+            model.BasicPublish(Exchange, "log4net.gelf.appender", true, null, messageBody.AsByteArray());
         }
 
         protected override void OnClose()
