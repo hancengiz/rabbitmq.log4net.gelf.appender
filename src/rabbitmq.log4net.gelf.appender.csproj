@@ -59,6 +59,7 @@
     <Compile Include="GelfAdapter.cs" />
     <Compile Include="GelfLogLevelMapper.cs" />
     <Compile Include="GelfMessage.cs" />
+    <Compile Include="MessageFormatters\ExceptionMessageFormatter.cs" />
     <Compile Include="MessageFormatters\GenericObjectGelfMessageFormatter.cs" />
     <Compile Include="MessageFormatters\IGelfMessageFormatter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
