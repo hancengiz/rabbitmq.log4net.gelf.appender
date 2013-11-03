@@ -2,6 +2,8 @@ rabbitmq.log4net.gelf.appender
 ==============================
 ![Logo](/logo.png "Logo")
 
+The RabbitMQ GELF appender is a customer appender for the [log4net](http://logging.apache.org/log4net/) logging framework which publishes log messages onto [RabbitMQ](http://www.rabbitmq.com/) message bus using the GELF (json) format.
+
 ## USAGE
 
 ### download the nuget package from the repository
