@@ -57,6 +57,7 @@ In particular it's handy with a log aggregator like [LogStash](http://logstash.n
  * The same happens when an exception object is provided when logging a message
  * More information from the LoggingEvent is populated in the GELF message: `_ThreadName` and `_Domain`
  * The `full_message` is only populated from a string when the original string is too long for `short_message`
+ * When the Message Formatters don't populate `short_message` it's populated with the type of the logged object
 
 ### Version 0.1.7
 

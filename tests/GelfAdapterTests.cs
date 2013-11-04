@@ -158,32 +158,6 @@ namespace tests
         }
 
         [Test]
-        public void ShouldSetFullMessageFromFullMessagePropertyOnAnMessageObject()
-        {
-            var messageObject = new { FullMessage = "fullmessage", Foo = "Bar" };
-            var loggingEvent = CreateLogginEvent(messageObject, Level.Debug);
-
-            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
-            var gelfMessage = adapter.Adapt(loggingEvent);
-
-            Assert.That(gelfMessage.FullMessage, Is.EqualTo("fullmessage"));
-            Assert.That(gelfMessage.ShortMessage, Is.Null);
-        }
-
-        [Test]
-        public void ShouldSetFullMessageFromFull_MessagePropertyOnAnMessageObject()
-        {
-            var messageObject = new { Full_Message = "full_message", Foo = "Bar" };
-            var loggingEvent = CreateLogginEvent(messageObject, Level.Debug);
-
-            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
-            var gelfMessage = adapter.Adapt(loggingEvent);
-
-            Assert.That(gelfMessage.FullMessage, Is.EqualTo("full_message"));
-            Assert.That(gelfMessage.ShortMessage, Is.Null);
-        }
-
-        [Test]
         public void ShouldSetShortMessageFromShortMessagePropertyOnAnMessageObject()
         {
             var messageObject = new { ShortMessage = "shortmessage", Foo = "Bar" };
@@ -207,6 +181,23 @@ namespace tests
 
             Assert.That(gelfMessage.ShortMessage, Is.EqualTo("short_message"));
             Assert.That(gelfMessage.FullMessage, Is.Null);
+        }
+
+        [Test]
+        public void When_Short_Message_Would_Be_Empty_Populate_With_Type_Of_Logged_Object_()
+        {
+            var loggingEvent = CreateLogginEvent(new DummyLoggedObject {Info = "test"}, Level.Debug);
+
+            var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
+            var gelfMessage = adapter.Adapt(loggingEvent);
+
+            Assert.That(gelfMessage.ShortMessage, Is.EqualTo("Logged object of type: tests.GelfAdapterTests+DummyLoggedObject"));
+            Assert.That(gelfMessage["_Info"], Is.EqualTo("test"));
+        }
+
+        public class DummyLoggedObject
+        {
+            public string Info { get; set; }
         }
 
         private static Exception CreateExceptionObjectWithStackTrace(string message)

@@ -65,6 +65,11 @@ namespace rabbitmq.log4net.gelf.appender
             var messageFormatter = messageObjectFormatters.First(x => x.CanApply(loggingEvent.MessageObject));
             messageFormatter.Format(gelfMessage, loggingEvent.MessageObject);
             AppendExceptionInformationIfExists(gelfMessage, loggingEvent.ExceptionObject);
+
+            if (string.IsNullOrWhiteSpace(gelfMessage.ShortMessage))
+            {
+                gelfMessage.ShortMessage = "Logged object of type: " + loggingEvent.MessageObject.GetType().FullName;
+            }
         }
 
         private void AppendExceptionInformationIfExists(GelfMessage gelfMessage, Exception exceptionObject)
