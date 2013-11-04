@@ -58,7 +58,7 @@ namespace tests
             Assert.That(testingRabbitListener.ReceivedMessages.Count, Is.EqualTo(1));
             var receivedMessage = testingRabbitListener.ReceivedMessages[0];
             var gelfMessage = JsonConvert.DeserializeObject<GelfMessage>(receivedMessage);
-            Assert.That(gelfMessage.FullMessage, Is.EqualTo(message));
+            Assert.That(gelfMessage.ShortMessage, Is.EqualTo(message));
             Assert.That(gelfMessage.Facility, Is.EqualTo("test-system"));
         } 
         

@@ -18,7 +18,7 @@ namespace tests.Formatters
         }
 
         [Test]
-        public void Formats_Short_String_Into_Both_Short_And_Full_Message()
+        public void When_Message_Is_Short_Enough_Only_Short_Message_Is_Populated()
         {
             var formatter = new StringGelfMessageFormatter();
             
@@ -27,7 +27,7 @@ namespace tests.Formatters
             formatter.Format(message, "Something went wrong");
 
             Assert.That(message.ShortMessage, Is.EqualTo("Something went wrong"));
-            Assert.That(message.FullMessage, Is.EqualTo("Something went wrong"));
+            Assert.That(message.FullMessage, Is.Null);
         }
 
         [Test]

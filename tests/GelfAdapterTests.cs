@@ -74,7 +74,6 @@ namespace tests
             var adapter = new GelfAdapter(StubGelfLogLevelMapper.WithValueToReturn(1));
             var gelfMessage = adapter.Adapt(loggingEvent);
 
-            Assert.That(gelfMessage.FullMessage, Is.EqualTo(message));
             Assert.That(gelfMessage.ShortMessage, Is.EqualTo(message));
         }
 
@@ -114,7 +113,6 @@ namespace tests
             var gelfMessage = adapter.Adapt(loggingEvent);
 
             Assert.That(gelfMessage.ShortMessage, Is.EqualTo("shiver me whiskers"));
-            Assert.That(gelfMessage.FullMessage, Is.EqualTo("shiver me whiskers"));
             Assert.That(gelfMessage["_ExceptionType"], Is.EqualTo("System.Exception"));
             Assert.That(gelfMessage["_ExceptionMessage"], Is.EqualTo("Giant Shrimp Monster"));
             Assert.That(gelfMessage["_Exception"], Is.StringStarting("System.Exception: Giant Shrimp Monster"));

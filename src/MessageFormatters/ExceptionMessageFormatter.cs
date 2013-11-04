@@ -28,9 +28,10 @@ namespace rabbitmq.log4net.gelf.appender.MessageFormatters
             }
             else
             {
-                gelfMessage["_Exception"] = exception.ToString();
+                gelfMessage["_ExceptionMessage"] = exception.Message;
             }
-            
+
+            gelfMessage["_Exception"] = exception.ToString();
             gelfMessage["_ExceptionType"] = messageObject.GetType().FullName;
             gelfMessage["_ExceptionStackTrace"] = exception.StackTrace;
 

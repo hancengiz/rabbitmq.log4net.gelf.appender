@@ -56,6 +56,7 @@ In particular it's handy with a log aggregator like [LogStash](http://logstash.n
  * If logger logs an `Exception` tge GELF message is populated with additional information: `_ExceptionType`, `_ExceptionStackTrace`, `_InnerExceptionType`, `_InnerExceptionMessage`
  * The same happens when an exception object is provided when logging a message
  * More information from the LoggingEvent is populated in the GELF message: `_ThreadName` and `_Domain`
+ * The `full_message` is only populated from a string when the original string is too long for `short_message`
 
 ### Version 0.1.7
 

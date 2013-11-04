@@ -102,16 +102,40 @@ namespace tests.Formatters
         }
 
         [Test]
-        public void When_Short_or_Full_Message_Already_Exist_Exception_Details_Added_As_Extras()
+        public void When_Short_Message_Already_Exist_Exception_Details_Added_As_Extras()
         {
             var gelfMessage = GelfMessage.EmptyGelfMessage;
             gelfMessage.ShortMessage = "I'm telling you";
+
+            formatter.Format(gelfMessage, new Exception("Something bad happend"));
+
+            Assert.That(gelfMessage["_ExceptionMessage"], Is.EqualTo("Something bad happend"));
+            Assert.That(gelfMessage["_Exception"], Is.EqualTo("System.Exception: Something bad happend"));
+        }
+
+        [Test]
+        public void When_Full_Message_Already_Exist_Exception_Details_Added_As_Extras()
+        {
+            var gelfMessage = GelfMessage.EmptyGelfMessage;
             gelfMessage.FullMessage = "I'm telling you a long story";
 
             formatter.Format(gelfMessage, new Exception("Something bad happend"));
 
             Assert.That(gelfMessage["_ExceptionMessage"], Is.EqualTo("Something bad happend"));
             Assert.That(gelfMessage["_Exception"], Is.EqualTo("System.Exception: Something bad happend"));
+        }
+
+        [Test]
+        public void Adds_Exception_Message_Info_Full_Message_When_Its_Empty()
+        {
+            var gelfMessage = GelfMessage.EmptyGelfMessage;
+            gelfMessage.ShortMessage = "I'm telling you";
+            gelfMessage.FullMessage = string.Empty;
+
+            formatter.Format(gelfMessage, new Exception("Something bad happend"));
+
+            Assert.That(gelfMessage["_ExceptionMessage"], Is.EqualTo("Something bad happend"));
+            Assert.That(gelfMessage.FullMessage, Is.EqualTo("System.Exception: Something bad happend"));
         }
     }
 }
