@@ -8,10 +8,10 @@ namespace tests
 {
     public class TestingRabbitListener : IDisposable
     {
-        private IConnection connection;
-        private IModel model;
-        private const string queueName = "test.consumer";
-        private const string exchangeName = "tests.log4net.gelf.appender";
+        private IConnection _connection;
+        private IModel _model;
+        private const string QueueName = "test.consumer";
+        private const string ExchangeName = "tests.log4net.gelf.appender";
         public List<string> ReceivedMessages { get; private set; }
 
         public TestingRabbitListener()
@@ -29,26 +29,26 @@ namespace tests
                                   Password = "guest",
                                   Protocol = Protocols.DefaultProtocol
                               };
-            connection = factory.CreateConnection();
-            model = connection.CreateModel();
-            var consumerQueue = model.QueueDeclare(queueName, false, true, true, null);
-            model.QueueBind(consumerQueue, exchangeName, "#");
+            _connection = factory.CreateConnection();
+            _model = _connection.CreateModel();
+            var consumerQueue = _model.QueueDeclare(QueueName, false, true, true, null);
+            _model.QueueBind(consumerQueue, ExchangeName, "#");
 
-            var consumer = new EventingBasicConsumer();
+            var consumer = new EventingBasicConsumer(_model);
             consumer.Received += (o, e) =>
                                      {
                                          var data = Encoding.ASCII.GetString(e.Body);
                                          ReceivedMessages.Add(data);
                                          Console.WriteLine(data);
                                      };
-            model.BasicConsume(consumerQueue, true, consumer);
+            _model.BasicConsume(consumerQueue, true, consumer);
         }
 
         public void Dispose()
         {
-            model.QueueUnbind(queueName, exchangeName, "#", null);
-            model.Dispose();
-            connection.Dispose();
+            _model.QueueUnbind(QueueName, ExchangeName, "#", null);
+            _model.Dispose();
+            _connection.Dispose();
         }
     }
 }

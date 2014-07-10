@@ -6,11 +6,11 @@ namespace rabbitmq.log4net.gelf.appender
 {
     public class GelfLogLevelMapper
     {
-        private readonly Dictionary<string, long> levelMappings;
+        private readonly Dictionary<string, long> _levelMappings;
 
         public GelfLogLevelMapper()
         {
-            levelMappings = new Dictionary<string, long>
+            _levelMappings = new Dictionary<string, long>
                                 {
                                     {Level.Alert.Name, (long)LocalSyslogAppender.SyslogSeverity.Alert},
                                     {Level.Critical.Name, (long)LocalSyslogAppender.SyslogSeverity.Critical},
@@ -34,8 +34,8 @@ namespace rabbitmq.log4net.gelf.appender
         public virtual long Map(Level log4NetLevel)
         {
             if (log4NetLevel == null) return (long)LocalSyslogAppender.SyslogSeverity.Debug;
-            var mappedValue = (long)LocalSyslogAppender.SyslogSeverity.Debug;
-            levelMappings.TryGetValue(log4NetLevel.Name, out mappedValue);
+            long mappedValue;
+            _levelMappings.TryGetValue(log4NetLevel.Name, out mappedValue);
             return mappedValue;
         }
     }

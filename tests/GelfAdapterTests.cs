@@ -221,16 +221,16 @@ namespace tests
 
         private class StubGelfLogLevelMapper : GelfLogLevelMapper
         {
-            private readonly long valueToReturn;
+            private readonly long _valueToReturn;
 
             private StubGelfLogLevelMapper(long valueToReturn)
             {
-                this.valueToReturn = valueToReturn;
+                _valueToReturn = valueToReturn;
             }
 
             public override long Map(Level log4NetLevel)
             {
-                return valueToReturn;
+                return _valueToReturn;
             }
 
             public static GelfLogLevelMapper WithValueToReturn(long valueToReturn)

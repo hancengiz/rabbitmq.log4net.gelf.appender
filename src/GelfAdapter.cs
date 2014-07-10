@@ -9,8 +9,8 @@ namespace rabbitmq.log4net.gelf.appender
 {
     public class GelfAdapter
     {
-        private readonly GelfLogLevelMapper gelfLogLevelMapper;
-        private readonly IList<IGelfMessageFormatter> messageObjectFormatters;
+        private readonly GelfLogLevelMapper _gelfLogLevelMapper;
+        private readonly IList<IGelfMessageFormatter> _messageObjectFormatters;
 
         private static readonly ExceptionMessageFormatter ExceptionMessageFormatter = new ExceptionMessageFormatter();
 
@@ -27,8 +27,8 @@ namespace rabbitmq.log4net.gelf.appender
 
         public GelfAdapter(GelfLogLevelMapper gelfLogLevelMapper, IList<IGelfMessageFormatter> messageObjectFormatters)
         {
-            this.gelfLogLevelMapper = gelfLogLevelMapper;
-            this.messageObjectFormatters = messageObjectFormatters;
+            _gelfLogLevelMapper = gelfLogLevelMapper;
+            _messageObjectFormatters = messageObjectFormatters;
         }
 
         public string Facility { private get; set; }
@@ -36,7 +36,7 @@ namespace rabbitmq.log4net.gelf.appender
         public GelfMessage Adapt(LoggingEvent loggingEvent)
         {
             var gelfMessage = GelfMessage.EmptyGelfMessage;
-            gelfMessage.Level = gelfLogLevelMapper.Map(loggingEvent.Level);
+            gelfMessage.Level = _gelfLogLevelMapper.Map(loggingEvent.Level);
             gelfMessage.Timestamp = loggingEvent.TimeStamp;
             if (!string.IsNullOrWhiteSpace(Facility))
             {
@@ -62,7 +62,7 @@ namespace rabbitmq.log4net.gelf.appender
 
         private void FormatGelfMessage(GelfMessage gelfMessage, LoggingEvent loggingEvent)
         {
-            var messageFormatter = messageObjectFormatters.First(x => x.CanApply(loggingEvent.MessageObject));
+            var messageFormatter = _messageObjectFormatters.First(x => x.CanApply(loggingEvent.MessageObject));
             messageFormatter.Format(gelfMessage, loggingEvent.MessageObject);
             AppendExceptionInformationIfExists(gelfMessage, loggingEvent.ExceptionObject);
 

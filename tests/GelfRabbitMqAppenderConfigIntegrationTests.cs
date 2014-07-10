@@ -13,7 +13,7 @@ namespace tests
         [Test]
         public void SetsAppenderPropertiesFromConfig()
         {
-            var doc = CreateLog4NetXmlConfigurationDocument(facility: "test-system");
+            var doc = CreateLog4NetXmlConfigurationDocument("test-system");
 
             log4net.Config.XmlConfigurator.Configure(doc.DocumentElement);
 
@@ -32,32 +32,32 @@ namespace tests
             const string appenderName = "rabbitmq.gelf.appender";
 
             var doc = new XmlDocument();
-            var log4netElement = doc.AppendChild(doc.CreateElement("log4net"));
+            var log4NetElement = doc.AppendChild(doc.CreateElement("log4net"));
   
-            var appenderElement = AddAppender(log4netElement, doc, appenderName);
+            var appenderElement = AddAppender(log4NetElement, doc, appenderName);
 
             AddAppenderProprty(appenderElement, doc, "VirtualHost", "/");
             AddAppenderProprty(appenderElement, doc, "Facility", facility);
 
-            AddRootLoggingElement(doc, appenderName, log4netElement);
+            AddRootLoggingElement(doc, appenderName, log4NetElement);
             return doc;
         }
 
-        private static XmlElement AddAppender(XmlNode log4netElement, XmlDocument doc, string appenderName)
+        private static XmlElement AddAppender(XmlNode log4NetElement, XmlDocument doc, string appenderName)
         {
-            var appenderElement = (XmlElement) log4netElement.AppendChild(doc.CreateElement("appender"));
+            var appenderElement = (XmlElement) log4NetElement.AppendChild(doc.CreateElement("appender"));
             appenderElement.SetAttribute("name", appenderName);
             appenderElement.SetAttribute("type",
                 "rabbitmq.log4net.gelf.appender.GelfRabbitMqAppender, rabbitmq.log4net.gelf.appender");
             return appenderElement;
         }
 
-        private static void AddRootLoggingElement(XmlDocument doc, string appenderName, XmlNode log4netElement)
+        private static void AddRootLoggingElement(XmlDocument doc, string appenderName, XmlNode log4NetElement)
         {
             var appenderRefElement = doc.CreateElement("appender-ref");
             appenderRefElement.SetAttribute("ref", appenderName);
 
-            log4netElement.AppendChild(doc.CreateElement("root")).AppendChild(appenderRefElement);
+            log4NetElement.AppendChild(doc.CreateElement("root")).AppendChild(appenderRefElement);
         }
 
         private static void AddAppenderProprty(XmlElement appenderElement, XmlDocument doc, string propertyName, string propertyValue)

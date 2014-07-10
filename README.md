@@ -51,6 +51,12 @@ In particular it's handy with a log aggregator like [LogStash](http://logstash.n
 
 ## CHANGE LOG
 
+### Version 0.2.1
+
+ * Upgrade to Log4net 1.2.13
+ * Upgrade to RabbitMQ 3.3.2.0
+ * Upgrade to Json.Net 6.0.2
+
 ### Version 0.2
 
  * If logger logs an `Exception` tge GELF message is populated with additional information: `_ExceptionType`, `_ExceptionStackTrace`, `_InnerExceptionType`, `_InnerExceptionMessage`

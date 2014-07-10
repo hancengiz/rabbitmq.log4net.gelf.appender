@@ -40,16 +40,16 @@ namespace tests
 
         public class KnownFacility : IKnowAboutConfiguredFacility
         {
-            private readonly string facilityName;
+            private readonly string _facilityName;
 
             public KnownFacility(string facilityName)
             {
-                this.facilityName = facilityName;
+                _facilityName = facilityName;
             }
 
             public void UseToCall(Action<string> facilitySettingAction)
             {
-                facilitySettingAction(facilityName);
+                facilitySettingAction(_facilityName);
             }
         }
 
