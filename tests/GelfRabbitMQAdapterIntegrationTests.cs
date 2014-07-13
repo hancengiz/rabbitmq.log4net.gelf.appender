@@ -11,14 +11,14 @@ namespace tests
     [TestFixture]
     public class GelfRabbitMqAdapterIntegrationTests
     {
-        private GelfRabbitMqAppender _appender;
-        private TestingRabbitListener _testingRabbitListener;
-        private ILog _logger;
+        private GelfRabbitMqAppender appender;
+        private TestingRabbitListener testingRabbitListener;
+        private ILog logger;
 
         [SetUp]
         public void SetUp()
         {
-            _appender = new GelfRabbitMqAppender
+            appender = new GelfRabbitMqAppender
                            {
                                Threshold = Level.Error,
                                HostName = "localhost",
@@ -30,20 +30,20 @@ namespace tests
                                Password = "guest",
                                Facility = "test-system"
                            };
-            _appender.ActivateOptions();
+            appender.ActivateOptions();
 
             var root = ((Hierarchy)LogManager.GetRepository()).Root;
-            root.AddAppender(_appender);
+            root.AddAppender(appender);
             root.Repository.Configured = true;
-            _logger = LogManager.GetLogger(GetType());
+            logger = LogManager.GetLogger(GetType());
 
-            _testingRabbitListener = new TestingRabbitListener();
+            testingRabbitListener = new TestingRabbitListener();
         }
 
         [TearDown]
         public void TearDown()
         {
-            _testingRabbitListener.Dispose();
+            testingRabbitListener.Dispose();
             LogManager.Shutdown();
         }
 
@@ -52,11 +52,11 @@ namespace tests
         {
             const string message = "should be published to rabbit";
 
-            _logger.Error(message);
+            logger.Error(message);
             Thread.Sleep(200);
 
-            Assert.That(_testingRabbitListener.ReceivedMessages.Count, Is.EqualTo(1));
-            var receivedMessage = _testingRabbitListener.ReceivedMessages[0];
+            Assert.That(testingRabbitListener.ReceivedMessages.Count, Is.EqualTo(1));
+            var receivedMessage = testingRabbitListener.ReceivedMessages[0];
             var gelfMessage = JsonConvert.DeserializeObject<GelfMessage>(receivedMessage);
             Assert.That(gelfMessage.ShortMessage, Is.EqualTo(message));
             Assert.That(gelfMessage.Facility, Is.EqualTo("test-system"));
@@ -67,10 +67,10 @@ namespace tests
         {
             const string message = "should not be published to rabbit";
 
-            _logger.Info(message);
+            logger.Info(message);
             Thread.Sleep(200);
 
-            Assert.That(_testingRabbitListener.ReceivedMessages.Count, Is.EqualTo(0));
+            Assert.That(testingRabbitListener.ReceivedMessages.Count, Is.EqualTo(0));
         }
     }
 }

@@ -23,18 +23,18 @@ namespace sample.console.client
     public class ForeverLoggingClass : IDisposable
     {
         protected static readonly ILog Log = LogManager.GetLogger(typeof(ForeverLoggingClass));
-        private readonly CancellationTokenSource _cancellationTokenSource;
+        private readonly CancellationTokenSource cancellationTokenSource;
 
         public ForeverLoggingClass()
         {
-            _cancellationTokenSource = new CancellationTokenSource();
-            Task.Factory.StartNew(LogSomeStuff, _cancellationTokenSource.Token);
+            cancellationTokenSource = new CancellationTokenSource();
+            Task.Factory.StartNew(LogSomeStuff, cancellationTokenSource.Token);
         }
 
         private void LogSomeStuff()
         {
             int count = 0;
-            while (!_cancellationTokenSource.IsCancellationRequested)
+            while (!cancellationTokenSource.IsCancellationRequested)
             {
                 Log.Info(string.Format("info message : {0}", ++count));
                 Log.Error(new Exception(string.Format("some random exception {0}", ++count)));
@@ -44,7 +44,7 @@ namespace sample.console.client
 
         public void Dispose()
         {
-            _cancellationTokenSource.Cancel();
+            cancellationTokenSource.Cancel();
         }
     }
 }

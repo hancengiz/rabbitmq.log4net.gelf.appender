@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -6,9 +7,9 @@ namespace rabbitmq.log4net.gelf.appender
 {
     public class AmqpClientProperties
     {
-        public static IDictionary<string, object> WithFacility(IKnowAboutConfiguredFacility facilityInformation)
+        public static IDictionary WithFacility(IKnowAboutConfiguredFacility facilityInformation)
         {
-            var properties = new Dictionary<string, object>();
+            var properties = new Dictionary<string, string>();
             var executingAssemblyName = Assembly.GetExecutingAssembly().GetName();
             properties.Add(Properties.Product, executingAssemblyName.Name);
             properties.Add(Properties.Version, executingAssemblyName.Version.ToString());

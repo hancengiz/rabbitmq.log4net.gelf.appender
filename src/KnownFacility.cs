@@ -4,16 +4,16 @@ namespace rabbitmq.log4net.gelf.appender
 {
     public class KnownFacility : IKnowAboutConfiguredFacility
     {
-        private readonly string _facility;
+        private readonly string facility;
 
         public KnownFacility(string facility)
         {
-            _facility = facility;
+            this.facility = facility;
         }
 
         public void UseToCall(Action<string> facilitySettingAction)
         {
-            facilitySettingAction(_facility);
+            facilitySettingAction(facility);
         }
     }
 }

@@ -7,19 +7,19 @@ namespace tests.Formatters
 {
     public class ExceptionMessageFormatterTests
     {
-        private ExceptionMessageFormatter _formatter;
+        private ExceptionMessageFormatter formatter;
 
         [SetUp]
         public void Setup()
         {
-            _formatter = new ExceptionMessageFormatter();
+            formatter = new ExceptionMessageFormatter();
         }
 
         [Test]
         public void Can_Format_An_Exception()
         {
-            Assert.That(_formatter.CanApply(new Exception()), Is.True);
-            Assert.That(_formatter.CanApply(new object()), Is.False);
+            Assert.That(formatter.CanApply(new Exception()), Is.True);
+            Assert.That(formatter.CanApply(new object()), Is.False);
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace tests.Formatters
         {
             var gelfMessage = GelfMessage.EmptyGelfMessage;
 
-            _formatter.Format(gelfMessage, new Exception("Something bad happend"));
+            formatter.Format(gelfMessage, new Exception("Something bad happend"));
 
             Assert.That(gelfMessage.ShortMessage, Is.EqualTo("Something bad happend"));
         }
@@ -37,7 +37,7 @@ namespace tests.Formatters
         {
             var gelfMessage = GelfMessage.EmptyGelfMessage;
 
-            _formatter.Format(gelfMessage, new Exception("Something bad happend"));
+            formatter.Format(gelfMessage, new Exception("Something bad happend"));
 
             Assert.That(gelfMessage.FullMessage, Is.EqualTo("System.Exception: Something bad happend"));
         }
@@ -47,7 +47,7 @@ namespace tests.Formatters
         {
             var gelfMessage = GelfMessage.EmptyGelfMessage;
 
-            _formatter.Format(gelfMessage, new InvalidOperationException("Something bad happend"));
+            formatter.Format(gelfMessage, new InvalidOperationException("Something bad happend"));
 
             Assert.That(gelfMessage["_ExceptionType"], Is.EqualTo("System.InvalidOperationException"));
         }
@@ -63,7 +63,7 @@ namespace tests.Formatters
             }
             catch (Exception ex)
             {
-                _formatter.Format(gelfMessage, ex);
+                formatter.Format(gelfMessage, ex);
             }
 
             Assert.That(gelfMessage["_ExceptionStackTrace"], Is.Not.Empty);
@@ -80,7 +80,7 @@ namespace tests.Formatters
             }
             catch (Exception ex)
             {
-                _formatter.Format(gelfMessage, ex);
+                formatter.Format(gelfMessage, ex);
             }
 
             Assert.That(gelfMessage["_ExceptionType"], Contains.Substring("InvalidOperationException"));
@@ -95,7 +95,7 @@ namespace tests.Formatters
             gelfMessage.ShortMessage = "I'm telling you";
             gelfMessage.FullMessage = "I'm telling you a long story";
 
-            _formatter.Format(gelfMessage, new Exception("Something bad happend"));
+            formatter.Format(gelfMessage, new Exception("Something bad happend"));
 
             Assert.That(gelfMessage.ShortMessage, Is.EqualTo("I'm telling you")); 
             Assert.That(gelfMessage.FullMessage, Is.EqualTo("I'm telling you a long story")); 
@@ -107,7 +107,7 @@ namespace tests.Formatters
             var gelfMessage = GelfMessage.EmptyGelfMessage;
             gelfMessage.ShortMessage = "I'm telling you";
 
-            _formatter.Format(gelfMessage, new Exception("Something bad happend"));
+            formatter.Format(gelfMessage, new Exception("Something bad happend"));
 
             Assert.That(gelfMessage["_ExceptionMessage"], Is.EqualTo("Something bad happend"));
             Assert.That(gelfMessage["_Exception"], Is.EqualTo("System.Exception: Something bad happend"));
@@ -119,7 +119,7 @@ namespace tests.Formatters
             var gelfMessage = GelfMessage.EmptyGelfMessage;
             gelfMessage.FullMessage = "I'm telling you a long story";
 
-            _formatter.Format(gelfMessage, new Exception("Something bad happend"));
+            formatter.Format(gelfMessage, new Exception("Something bad happend"));
 
             Assert.That(gelfMessage["_ExceptionMessage"], Is.EqualTo("Something bad happend"));
             Assert.That(gelfMessage["_Exception"], Is.EqualTo("System.Exception: Something bad happend"));
@@ -132,7 +132,7 @@ namespace tests.Formatters
             gelfMessage.ShortMessage = "I'm telling you";
             gelfMessage.FullMessage = string.Empty;
 
-            _formatter.Format(gelfMessage, new Exception("Something bad happend"));
+            formatter.Format(gelfMessage, new Exception("Something bad happend"));
 
             Assert.That(gelfMessage["_ExceptionMessage"], Is.EqualTo("Something bad happend"));
             Assert.That(gelfMessage.FullMessage, Is.EqualTo("System.Exception: Something bad happend"));
