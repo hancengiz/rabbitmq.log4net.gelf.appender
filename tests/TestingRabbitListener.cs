@@ -34,7 +34,7 @@ namespace tests
             var consumerQueue = model.QueueDeclare(queueName, false, true, true, null);
             model.QueueBind(consumerQueue, exchangeName, "#");
 
-            var consumer = new EventingBasicConsumer();
+            var consumer = new EventingBasicConsumer(model);
             consumer.Received += (o, e) =>
                                      {
                                          var data = Encoding.ASCII.GetString(e.Body);
