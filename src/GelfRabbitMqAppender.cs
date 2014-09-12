@@ -14,6 +14,7 @@ namespace rabbitmq.log4net.gelf.appender
         public string Username { get; set; }
         public string Password { get; set; }
         public string Facility { get; set; }
+        public bool Durable { get; set; }
 
         private readonly GelfAdapter gelfAdapter;
         private IConnection connection;
@@ -62,7 +63,7 @@ namespace rabbitmq.log4net.gelf.appender
             connection = CreateConnectionFactory().CreateConnection();
             connection.ConnectionShutdown += ConnectionShutdown;
             model = connection.CreateModel();
-            model.ExchangeDeclare(Exchange, ExchangeType.Topic);
+            model.ExchangeDeclare(Exchange, ExchangeType.Topic, Durable);
         }
 
         void ConnectionShutdown(IConnection shutingDownConnection, ShutdownEventArgs reason)
@@ -104,7 +105,7 @@ namespace rabbitmq.log4net.gelf.appender
         protected override void Append(LoggingEvent loggingEvent)
         {
             EnsureConnectionIsOpen();
-            model.ExchangeDeclare(Exchange, ExchangeType.Topic);
+            model.ExchangeDeclare(Exchange, ExchangeType.Topic, Durable);
             var messageBody = gelfAdapter.Adapt(loggingEvent).AsJson();
             model.BasicPublish(Exchange, "log4net.gelf.appender", true, null, messageBody.AsByteArray());
         }
