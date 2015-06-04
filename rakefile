@@ -39,7 +39,7 @@ desc "pust to offical nuget repo"
 nugetpush :nuget_push, [:arg1] => :create_nuget_package do |nuget, args|
     nuget.command = "tools/nuget.exe"
     nuget.package = "src\\bin\\Release\\rabbitmq.log4net.gelf.appender.#{read_version}.nupkg"
-    nuget.apikey = args.arg1
+    nuget.api_key  = args.arg1
 end
 
 desc "create the nuget package"
