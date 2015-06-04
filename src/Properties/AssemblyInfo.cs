@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("rabbitmq.log4net.gelf.appender")]
 [assembly: AssemblyProduct("rabbitmq.log4net.gelf.appender")]
-[assembly: AssemblyCompany("Cengiz Han, Marcin Floryan")]
+[assembly: AssemblyCompany("Cengiz Han and Marcin Floryan")]
 [assembly: AssemblyCopyright("Copyleft")]
 [assembly: AssemblyVersion("0.2.0.*")]
 [assembly: AssemblyInformationalVersion("0.2.0")]

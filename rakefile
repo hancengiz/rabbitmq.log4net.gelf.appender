@@ -9,17 +9,18 @@ desc "compile"
 msbuild :compile do |msb|
   puts "\n[COMPILE] Compiling solution.\n"
   msb.properties :configuration => :Release
-  msb.targets :Clean, :Build
+  msb.targets  :Build
   msb.solution = "rabbitmq.log4net.gelf.appender.sln"
-  msb.other_switches :noconsolelogger => true
+  
 end
 
 desc "Test"
 nunit :test => :compile do |nunit|
   puts "\n[TEST] Running unit tests.\n"
   nunit.command = "packages/NUnit.Runners.2.6.2/tools/nunit-console.exe"
-  nunit.options = "/framework v4.0.30319", "/nologo", "/noshadow", "/out:testoutput.txt"
-  nunit.assemblies "tests/bin/Release/tests.dll"
+  nunit.results_path  = "testoutput.txt"
+  nunit.no_logo
+  nunit.assemblies  = FileList["tests/bin/Release/tests.dll"]
 end
 
 desc "Install all NuGet packages."
@@ -45,14 +46,14 @@ desc "create the nuget package"
 nuspec :create_nuspec do |nuspec|
    nuspec.id="$id$"
    nuspec.version = "$version$"
-   nuspec.authors = "Cengiz Han, Marcin Floryan"
+   nuspec.authors = ["Cengiz Han","Marcin Floryan"]
    nuspec.description = "$description$"
    nuspec.title = "RabbitMQ.log4net.gelf.appender"
    nuspec.language = "en-US"
-   nuspec.licenseUrl = "https://github.com/hancengiz/rabbitmq.log4net.gelf.appender"
-   nuspec.projectUrl = "https://github.com/hancengiz/rabbitmq.log4net.gelf.appender"
-   nuspec.iconUrl = "https://raw.github.com/hancengiz/rabbitmq.log4net.gelf.appender/master/logo.png"
-   nuspec.tags = "rabbitMQ log4net gelf logging appender"
+   nuspec.license_url  = "https://github.com/hancengiz/rabbitmq.log4net.gelf.appender"
+   nuspec.project_url = "https://github.com/hancengiz/rabbitmq.log4net.gelf.appender"
+   nuspec.icon_url = "https://raw.github.com/hancengiz/rabbitmq.log4net.gelf.appender/master/logo.png"
+   nuspec.tags = ["rabbitMQ log4net gelf logging appender"]
    nuspec.output_file = "src/rabbitmq.log4net.gelf.appender.nuspec"
 end
 
@@ -60,8 +61,8 @@ desc "create the nuget package"
 nugetpack :create_nuget_package => [:compile, :create_nuspec] do |nuget|
    nuget.command     = "tools/nuget.exe"
    nuget.nuspec      = "src/rabbitmq.log4net.gelf.appender.csproj"
-   nuget.output      = "src/bin/Release/"
-   nuget.symbols     = true
+   nuget.output_directory       = "src/bin/Release/"
+   nuget.symbols
 end
 
 def read_version(filepath="src/Properties/AssemblyInfo.cs")
