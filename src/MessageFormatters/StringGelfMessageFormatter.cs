@@ -1,4 +1,4 @@
-using log4net.Util;
+using System.Collections.Generic;
 
 namespace rabbitmq.log4net.gelf.appender.MessageFormatters
 {
@@ -6,9 +6,14 @@ namespace rabbitmq.log4net.gelf.appender.MessageFormatters
     {
         private const int MaximumShortMessageLength = 250;
 
+        readonly List<string> stringTypeList = new List<string>
+        {
+            "System.String","log4net.Util.SystemStringFormat","Common.Logging.Factory.AbstractLogger+StringFormatFormattedMessage"
+        };
+
         public bool CanApply(object messageObject)
         {
-            return (messageObject is string || messageObject is SystemStringFormat);
+            return stringTypeList.Contains(messageObject.GetType().FullName);
         }
 
         public void Format(GelfMessage gelfMessage, object messageObject)
