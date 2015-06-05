@@ -1,7 +1,7 @@
 using RabbitMQ.Client;
-using RabbitMQ.Client.Framing.v0_9_1;
 using log4net.Appender;
 using log4net.Core;
+using RabbitMQ.Client.Framing;
 
 namespace rabbitmq.log4net.gelf.appender
 {
@@ -92,7 +92,7 @@ namespace rabbitmq.log4net.gelf.appender
         {
             return new ConnectionFactory
                                     {
-                                        Protocol = Protocols.FromEnvironment(),
+                                        Protocol = Protocols.DefaultProtocol,
                                         HostName = HostName,
                                         Port = Port,
                                         VirtualHost = VirtualHost,
