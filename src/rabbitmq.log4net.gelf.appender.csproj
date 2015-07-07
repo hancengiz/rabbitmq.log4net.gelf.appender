@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="AmqpClientProperties.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="GelfRabbitMqAppenderAsync.cs" />
     <Compile Include="GelfRabbitMqAppender.cs" />
     <Compile Include="IKnowAboutConfiguredFacility.cs" />
     <Compile Include="KnownFacility.cs" />

@@ -16,9 +16,9 @@ namespace rabbitmq.log4net.gelf.appender
         public string Facility { get; set; }
         public bool Durable { get; set; }
 
-        private readonly GelfAdapter gelfAdapter;
+        protected readonly GelfAdapter gelfAdapter;
         private IConnection connection;
-        private IModel model;
+        protected IModel model;
         private IKnowAboutConfiguredFacility facilityInformation = new UnknownFacility();
 
         public GelfRabbitMqAppender() : this(new GelfAdapter()) { }
@@ -42,7 +42,7 @@ namespace rabbitmq.log4net.gelf.appender
         public override void ActivateOptions()
         {
             base.ActivateOptions();
-            
+
             if (!string.IsNullOrWhiteSpace(Facility))
             {
                 facilityInformation = new KnownFacility(Facility);
@@ -98,7 +98,7 @@ namespace rabbitmq.log4net.gelf.appender
                                         VirtualHost = VirtualHost,
                                         UserName = Username,
                                         Password = Password,
-                                        ClientProperties = AmqpClientProperties.WithFacility(facilityInformation) 
+                                        ClientProperties = AmqpClientProperties.WithFacility(facilityInformation)
                                     };
         }
 

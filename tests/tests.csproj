@@ -61,6 +61,7 @@
     <Compile Include="Formatters\StringGelfMessageFormatterTests.cs" />
     <Compile Include="GelfAdapterTests.cs" />
     <Compile Include="GelfLogLevelMapperTests.cs" />
+    <Compile Include="GelfRabbitMqAdapterAsyncIntegrationTests.cs" />
     <Compile Include="GelfRabbitMqAdapterIntegrationTests.cs" />
     <Compile Include="GelfRabbitMqAppenderConfigIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
