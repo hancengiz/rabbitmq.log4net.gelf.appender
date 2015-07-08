@@ -66,13 +66,13 @@ namespace rabbitmq.log4net.gelf.appender
             model.ExchangeDeclare(Exchange, ExchangeType.Topic, Durable);
         }
 
-        void ConnectionShutdown(IConnection shutingDownConnection, ShutdownEventArgs reason)
+        private void ConnectionShutdown(IConnection shutingDownConnection, ShutdownEventArgs reason)
         {
             SafeShutdownForConnection();
             SafeShutDownForModel();
         }
 
-        private void SafeShutDownForModel()
+        protected virtual void SafeShutDownForModel()
         {
             if (model == null) return;
             model.Close(Constants.ReplySuccess, "gelf rabbit appender shutting down!");

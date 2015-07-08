@@ -15,16 +15,26 @@ namespace rabbitmq.log4net.gelf.appender
             ThreadPool.QueueUserWorkItem(AsyncAppend, loggingEvent);
         }
 
+        protected override void SafeShutDownForModel()
+        {
+            lock (model)
+            {
+                base.SafeShutDownForModel();
+            }
+        }
+
         private void AsyncAppend(object state)
         {
             var loggingEvent = state as LoggingEvent;
 
             if (loggingEvent == null) return;
 
-            EnsureConnectionIsOpen();
-            model.ExchangeDeclare(Exchange, ExchangeType.Topic, Durable);
-            var messageBody = gelfAdapter.Adapt(loggingEvent).AsJson();
-            model.BasicPublish(Exchange, "log4net.gelf.appender", true, null, messageBody.AsByteArray());
+            lock (model)
+            {
+                EnsureConnectionIsOpen();
+                var messageBody = gelfAdapter.Adapt(loggingEvent).AsJson();
+                model.BasicPublish(Exchange, "log4net.gelf.appender", true, null, messageBody.AsByteArray());
+            }
         }
     }
 }
