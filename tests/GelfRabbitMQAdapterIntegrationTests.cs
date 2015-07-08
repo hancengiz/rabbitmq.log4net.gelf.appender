@@ -5,6 +5,7 @@ using log4net;
 using log4net.Core;
 using log4net.Repository.Hierarchy;
 using rabbitmq.log4net.gelf.appender;
+using tests.TestingSupport.tests.TestingSupport;
 
 namespace tests
 {
@@ -53,7 +54,7 @@ namespace tests
             const string message = "should be published to rabbit";
 
             logger.Error(message);
-            Thread.Sleep(200);
+			testingRabbitListener.WaitForAMessage();
 
             Assert.That(testingRabbitListener.ReceivedMessages.Count, Is.EqualTo(1));
             var receivedMessage = testingRabbitListener.ReceivedMessages[0];
@@ -68,7 +69,8 @@ namespace tests
             const string message = "should not be published to rabbit";
 
             logger.Info(message);
-            Thread.Sleep(200);
+			
+			Wait.For(1).ThenContinue();
 
             Assert.That(testingRabbitListener.ReceivedMessages.Count, Is.EqualTo(0));
         }

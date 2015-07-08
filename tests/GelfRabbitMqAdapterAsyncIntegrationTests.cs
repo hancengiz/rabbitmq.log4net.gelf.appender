@@ -53,7 +53,8 @@ namespace tests
             const string message = "should be published to rabbit";
 
             logger.Error(message);
-            Thread.Sleep(1000);
+
+	        testingRabbitListener.WaitForAMessage();
 
             Assert.That(testingRabbitListener.ReceivedMessages.Count, Is.EqualTo(1));
             var receivedMessage = testingRabbitListener.ReceivedMessages[0];

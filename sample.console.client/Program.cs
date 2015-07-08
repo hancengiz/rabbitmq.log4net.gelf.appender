@@ -8,7 +8,7 @@ namespace sample.console.client
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             XmlConfigurator.Configure();
             using (new ForeverLoggingClass())
