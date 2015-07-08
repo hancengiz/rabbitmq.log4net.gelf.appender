@@ -38,7 +38,7 @@
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\workspace\merchant-integration\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RabbitMQ.Client">
       <HintPath>..\packages\RabbitMQ.Client.3.4.0\lib\net35\RabbitMQ.Client.dll</HintPath>
@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="AmqpClientProperties.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="GelfRabbitMqAppenderAsync.cs" />
     <Compile Include="GelfRabbitMqAppender.cs" />
     <Compile Include="IKnowAboutConfiguredFacility.cs" />
     <Compile Include="KnownFacility.cs" />
