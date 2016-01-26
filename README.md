@@ -20,7 +20,7 @@ sample config
   </configSections>
   
   <log4net>
-    <appender name="rabbitmq.gelf.appender" type="rabbitmq.log4net.gelf.appender.GelfRabbitMqAdapter, rabbitmq.log4net.gelf.appender">
+    <appender name="rabbitmq.gelf.appender" type="rabbitmq.log4net.gelf.appender.GelfRabbitMqAppender, rabbitmq.log4net.gelf.appender">
       <HostName value="localhost" />
       <VirtualHost value="/" />
       <Port value="5672" />
