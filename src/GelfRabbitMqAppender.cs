@@ -15,6 +15,8 @@ namespace rabbitmq.log4net.gelf.appender
         public string Password { get; set; }
         public string Facility { get; set; }
         public bool Durable { get; set; }
+        public string ExchangeType { get; set; }
+        public string RoutingKey { get; set; }
 
         protected readonly GelfAdapter gelfAdapter;
         private IConnection connection;
@@ -37,6 +39,8 @@ namespace rabbitmq.log4net.gelf.appender
             Exchange = "log4net.gelf.appender";
             Username = "guest";
             Password = "guest";
+            ExchangeType = "topic";
+            RoutingKey = "log4net.gelf.appender";
         }
 
         public override void ActivateOptions()
@@ -63,7 +67,7 @@ namespace rabbitmq.log4net.gelf.appender
             connection = CreateConnectionFactory().CreateConnection();
             connection.ConnectionShutdown += ConnectionShutdown;
             model = connection.CreateModel();
-            model.ExchangeDeclare(Exchange, ExchangeType.Topic, Durable);
+            model.ExchangeDeclare(Exchange, ExchangeType, Durable);
         }
 
         private void ConnectionShutdown(IConnection shutingDownConnection, ShutdownEventArgs reason)
@@ -105,9 +109,9 @@ namespace rabbitmq.log4net.gelf.appender
         protected override void Append(LoggingEvent loggingEvent)
         {
             EnsureConnectionIsOpen();
-            model.ExchangeDeclare(Exchange, ExchangeType.Topic, Durable);
+            model.ExchangeDeclare(Exchange, ExchangeType, Durable);
             var messageBody = gelfAdapter.Adapt(loggingEvent).AsJson();
-            model.BasicPublish(Exchange, "log4net.gelf.appender", true, null, messageBody.AsByteArray());
+            model.BasicPublish(Exchange, RoutingKey, true, null, messageBody.AsByteArray());
         }
 
         protected override void OnClose()
