@@ -23,7 +23,7 @@ namespace rabbitmq.log4net.gelf.appender
         protected IModel model;
         private IKnowAboutConfiguredFacility facilityInformation = new UnknownFacility();
 
-        public GelfRabbitMqAppender() : this(new GelfAdapter()) { }
+        public GelfRabbitMqAppender() : this(new GelfAdapter()) { SetDefaultConfig(); }
 
         public GelfRabbitMqAppender(GelfAdapter gelfAdapter)
         {
@@ -33,14 +33,14 @@ namespace rabbitmq.log4net.gelf.appender
 
         private void SetDefaultConfig()
         {
-            HostName = "localhost";
-            Port = 5672;
-            VirtualHost = "/";
-            Exchange = "log4net.gelf.appender";
-            Username = "guest";
-            Password = "guest";
-            ExchangeType = "topic";
-            RoutingKey = "log4net.gelf.appender";
+            HostName = string.IsNullOrEmpty(HostName) ? "localhost" : HostName;
+            Port = Port == 0 ? 5672 : Port;
+            VirtualHost =string.IsNullOrEmpty(VirtualHost) ? "/" : VirtualHost;
+            Exchange = string.IsNullOrEmpty(Exchange) ? "log4net.gelf.appender" : Exchange;
+            Username = string.IsNullOrEmpty(Username) ? "guest" : Username;
+            Password = string.IsNullOrEmpty(Password) ? "guest" : Password;
+            ExchangeType = string.IsNullOrEmpty(ExchangeType) ? "topic" : ExchangeType;
+            RoutingKey =string.IsNullOrEmpty(RoutingKey) ? "log4net.gelf.appender" : RoutingKey;
         }
 
         public override void ActivateOptions()
