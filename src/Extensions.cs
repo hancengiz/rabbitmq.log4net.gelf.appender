@@ -29,12 +29,12 @@ namespace rabbitmq.log4net.gelf.appender
         public static double ToUnixTimestamp(this DateTime d)
         {
             var duration = d.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            return duration.TotalMilliseconds;
+            return duration.TotalSeconds;
         }
 
         public static DateTime FromUnixTimestamp(this double dateTime)
         {
-            var datetime = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(dateTime).ToLocalTime();
+            var datetime = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(dateTime).ToLocalTime();
             return datetime;
         }
 
